@@ -11,7 +11,8 @@ import SDWebImage
 class LaunchesViewController: UIViewController {
   // MARK: - Variables
   private var launchesViewModel: LaunchesViewModel
-  public var vSpinner: [UIView] = []
+  // MARK: - UI Components
+  public var spinner: [UIView] = []
   let refreshControl = UIRefreshControl()
   private var tableView: UITableView = {
     let launchTableView = UITableView()
@@ -36,27 +37,29 @@ class LaunchesViewController: UIViewController {
     safeArea = view.layoutMarginsGuide
     configDateFromatter()
     setupTableView()
-    refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-    refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
-    tableView.addSubview(refreshControl)
+    setUPRefreshControl()
     self.launchesViewModel.onLoadingsUpdated = { [weak self] in
       DispatchQueue.main.async { [weak self] in
         if self?.launchesViewModel.isLoading ?? false {
-          self?.tableView.isHidden = true
           self?.showSpinner(onView: self?.view)
         } else {
-          print("try to reload data end loading")
           self?.removeSpinner()
           self?.tableView.reloadData()
-          self?.tableView.isHidden = false
         }
       }
     }
   }
+// MARK: - Pull to refresh function
   @objc func refresh() {
+    launchesViewModel.page = 1
     launchesViewModel.fetchLaunches()
-    print("trying to fetch")
     refreshControl.endRefreshing()
+  }
+  // MARK: - Setup UI
+  func setUPRefreshControl() {
+    refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+    refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+    tableView.addSubview(refreshControl)
   }
   func setupTableView() {
     view.addSubview(tableView)
@@ -79,7 +82,7 @@ class LaunchesViewController: UIViewController {
     dateFormatter.locale = Locale.current
   }
 }
-
+// MARK: - TableView functions
 extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return launchesViewModel.launches.count
@@ -88,11 +91,17 @@ extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: LaunchViewCell.sellIdentifier, for: indexPath) as? LaunchViewCell else {
       fatalError("Unable to dequeue LaunchCell in LaunchesView Controller")
     }
-    cell.configure(with: launchesViewModel.launches[indexPath.row])
+    cell.configure(with: launchesViewModel.launches[indexPath.row], rowNum: indexPath.row )
     return cell
   }
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    if indexPath.row == launchesViewModel.launches.count - 1 {
+      self.launchesViewModel.loadMoreData()
+      refreshControl.endRefreshing()
+      }
+  }
 }
-// MARK: - "Loading"
+// MARK: - Loading functions
 extension LaunchesViewController {
   func showSpinner(onView: UIView?) {
     guard let onView else { return }
@@ -106,12 +115,12 @@ extension LaunchesViewController {
       spinnerView.addSubview(activityIndicator)
       onView.addSubview(spinnerView)
     }
-    self.vSpinner.append(spinnerView)
+    self.spinner.append(spinnerView)
   }
 
   func removeSpinner() {
     DispatchQueue.main.async {
-      self.vSpinner.popLast()?.removeFromSuperview()
+      self.spinner.popLast()?.removeFromSuperview()
     }
   }
 }
