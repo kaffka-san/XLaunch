@@ -7,14 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		305DC7F92A77D83A003295D5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7F82A77D83A003295D5 /* NetworkManager.swift */; };
+		305DC7FB2A77DA20003295D5 /* LaunchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7FA2A77DA20003295D5 /* LaunchError.swift */; };
+		305DC7FD2A77DA4E003295D5 /* LaunchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */; };
+		305DC8002A77F855003295D5 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC7FF2A77F855003295D5 /* Nuke */; };
+		305DC8022A77F855003295D5 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC8012A77F855003295D5 /* NukeExtensions */; };
+		305DC8042A77F855003295D5 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC8032A77F855003295D5 /* NukeUI */; };
 		30D4F44D2A771B0900614143 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F44C2A771B0900614143 /* AppDelegate.swift */; };
 		30D4F44F2A771B0900614143 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F44E2A771B0900614143 /* SceneDelegate.swift */; };
 		30D4F4512A771B0900614143 /* LaunchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4502A771B0900614143 /* LaunchesViewController.swift */; };
 		30D4F4562A771B0A00614143 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30D4F4552A771B0A00614143 /* Assets.xcassets */; };
 		30D4F4592A771B0A00614143 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30D4F4572A771B0A00614143 /* LaunchScreen.storyboard */; };
+		30D4F4642A7728EC00614143 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4632A7728EC00614143 /* Launch.swift */; };
+		30D4F4802A7746DB00614143 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 30D4F47F2A7746DB00614143 /* SDWebImage */; };
+		30D4F4822A774E3F00614143 /* LaunchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4812A774E3F00614143 /* LaunchViewCell.swift */; };
+		30D4F4872A77A80500614143 /* XLaunchApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4862A77A80500614143 /* XLaunchApi.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		305DC7F82A77D83A003295D5 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		305DC7FA2A77DA20003295D5 /* LaunchError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchError.swift; sourceTree = "<group>"; };
+		305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchesViewModel.swift; sourceTree = "<group>"; };
 		30D4F4492A771B0900614143 /* XLaunch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XLaunch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D4F44C2A771B0900614143 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30D4F44E2A771B0900614143 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +35,9 @@
 		30D4F4552A771B0A00614143 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30D4F4582A771B0A00614143 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		30D4F45A2A771B0A00614143 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30D4F4632A7728EC00614143 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
+		30D4F4812A774E3F00614143 /* LaunchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewCell.swift; sourceTree = "<group>"; };
+		30D4F4862A77A80500614143 /* XLaunchApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XLaunchApi.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +45,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30D4F4802A7746DB00614143 /* SDWebImage in Frameworks */,
+				305DC8002A77F855003295D5 /* Nuke in Frameworks */,
+				305DC8022A77F855003295D5 /* NukeExtensions in Frameworks */,
+				305DC8042A77F855003295D5 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,14 +74,71 @@
 		30D4F44B2A771B0900614143 /* XLaunch */ = {
 			isa = PBXGroup;
 			children = (
-				30D4F44C2A771B0900614143 /* AppDelegate.swift */,
-				30D4F44E2A771B0900614143 /* SceneDelegate.swift */,
-				30D4F4502A771B0900614143 /* LaunchesViewController.swift */,
+				30D4F4852A77A77F00614143 /* Api */,
+				30D4F4672A77299B00614143 /* Supporting */,
+				30D4F4652A77294E00614143 /* Model */,
+				30D4F4682A7729DC00614143 /* Screens */,
 				30D4F4552A771B0A00614143 /* Assets.xcassets */,
 				30D4F4572A771B0A00614143 /* LaunchScreen.storyboard */,
 				30D4F45A2A771B0A00614143 /* Info.plist */,
 			);
 			path = XLaunch;
+			sourceTree = "<group>";
+		};
+		30D4F4652A77294E00614143 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4632A7728EC00614143 /* Launch.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		30D4F4672A77299B00614143 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F44E2A771B0900614143 /* SceneDelegate.swift */,
+				30D4F44C2A771B0900614143 /* AppDelegate.swift */,
+			);
+			name = Supporting;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		30D4F4682A7729DC00614143 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4692A7729E300614143 /* LaunchesList */,
+				30D4F46A2A7729FA00614143 /* LaunchDetail */,
+			);
+			name = Screens;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		30D4F4692A7729E300614143 /* LaunchesList */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4502A771B0900614143 /* LaunchesViewController.swift */,
+				30D4F4812A774E3F00614143 /* LaunchViewCell.swift */,
+				305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */,
+			);
+			name = LaunchesList;
+			sourceTree = "<group>";
+		};
+		30D4F46A2A7729FA00614143 /* LaunchDetail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = LaunchDetail;
+			sourceTree = "<group>";
+		};
+		30D4F4852A77A77F00614143 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4862A77A80500614143 /* XLaunchApi.swift */,
+				305DC7F82A77D83A003295D5 /* NetworkManager.swift */,
+				305DC7FA2A77DA20003295D5 /* LaunchError.swift */,
+			);
+			name = Api;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,16 +148,22 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 30D4F45D2A771B0A00614143 /* Build configuration list for PBXNativeTarget "XLaunch" */;
 			buildPhases = (
+				30D4F4602A771DC400614143 /* Linter */,
 				30D4F4452A771B0900614143 /* Sources */,
 				30D4F4462A771B0900614143 /* Frameworks */,
 				30D4F4472A771B0900614143 /* Resources */,
-				30D4F4602A771DC400614143 /* Linter */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = XLaunch;
+			packageProductDependencies = (
+				30D4F47F2A7746DB00614143 /* SDWebImage */,
+				305DC7FF2A77F855003295D5 /* Nuke */,
+				305DC8012A77F855003295D5 /* NukeExtensions */,
+				305DC8032A77F855003295D5 /* NukeUI */,
+			);
 			productName = XLaunch;
 			productReference = 30D4F4492A771B0900614143 /* XLaunch.app */;
 			productType = "com.apple.product-type.application";
@@ -109,6 +192,10 @@
 				Base,
 			);
 			mainGroup = 30D4F4402A771B0900614143;
+			packageReferences = (
+				30D4F47E2A7746DB00614143 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
 			productRefGroup = 30D4F44A2A771B0900614143 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -133,6 +220,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		30D4F4602A771DC400614143 /* Linter */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -147,7 +235,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPATH=/opt/homebrew/bin:$PATH\nif [ -f ~/com.raywenderlich.swiftlint.yml ]; then\n  if which swiftlint >/dev/null; then\n    swiftlint --no-cache --config ~/com.raywenderlich.swiftlint.yml\n  fi\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPATH=/opt/homebrew/bin:$PATH\nif [ -f ~/com.raywenderlich.swiftlint.yml ]; then\n  if which swiftlint >/dev/null; then\n    swiftlint --no-cache --config ~/com.raywenderlich.swiftlint.yml\n    else\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n  fi\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -156,8 +244,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				305DC7FB2A77DA20003295D5 /* LaunchError.swift in Sources */,
 				30D4F4512A771B0900614143 /* LaunchesViewController.swift in Sources */,
 				30D4F44D2A771B0900614143 /* AppDelegate.swift in Sources */,
+				30D4F4642A7728EC00614143 /* Launch.swift in Sources */,
+				30D4F4822A774E3F00614143 /* LaunchViewCell.swift in Sources */,
+				305DC7F92A77D83A003295D5 /* NetworkManager.swift in Sources */,
+				305DC7FD2A77DA4E003295D5 /* LaunchesViewModel.swift in Sources */,
+				30D4F4872A77A80500614143 /* XLaunchApi.swift in Sources */,
 				30D4F44F2A771B0900614143 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,6 +466,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
+		30D4F47E2A7746DB00614143 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		305DC7FF2A77F855003295D5 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		305DC8012A77F855003295D5 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		305DC8032A77F855003295D5 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
+		30D4F47F2A7746DB00614143 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30D4F47E2A7746DB00614143 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30D4F4412A771B0900614143 /* Project object */;
 }
