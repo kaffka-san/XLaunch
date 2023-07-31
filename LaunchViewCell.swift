@@ -40,7 +40,8 @@ class LaunchViewCell: UITableViewCell {
   }
   func configure(with launch: Launch, rowNum: Int) {
     self.launch = launch
-    self.launchName.text = "launch.name \(rowNum)"
+    self.patchImageView.image = UIImage(systemName: "questionmark")
+    self.launchName.text = "\(launch.name) \(rowNum)"
     if let imageUrl = self.launch.imageUrl {
       ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
         guard let self = self else {

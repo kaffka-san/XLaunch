@@ -13,3 +13,6 @@ enum LaunchServiceError: Error {
   case invalidData
   case unableToComplete
 }
+enum ApplicationState {
+  case data, error, loading, empty, noResults
+}
