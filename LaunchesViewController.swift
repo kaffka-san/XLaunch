@@ -13,6 +13,7 @@ class LaunchesViewController: UIViewController {
   private var launchesViewModel: LaunchesViewModel
   // MARK: - UI Components
   public var spinner: [UIView] = []
+  private let searchController = UISearchController(searchResultsController: nil)
   let refreshControl = UIRefreshControl()
   private var tableView: UITableView = {
     let launchTableView = UITableView()
@@ -37,7 +38,9 @@ class LaunchesViewController: UIViewController {
     safeArea = view.layoutMarginsGuide
     configDateFromatter()
     setupTableView()
+    setupNavigationController()
     setUPRefreshControl()
+    self.setupSearchController()
     self.launchesViewModel.onLoadingsUpdated = { [weak self] in
       DispatchQueue.main.async { [weak self] in
         if self?.launchesViewModel.isLoading ?? false {
@@ -49,7 +52,7 @@ class LaunchesViewController: UIViewController {
       }
     }
   }
-// MARK: - Pull to refresh function
+  // MARK: - Pull to refresh function
   @objc func refresh() {
     launchesViewModel.page = 1
     launchesViewModel.fetchLaunches()
@@ -75,6 +78,20 @@ class LaunchesViewController: UIViewController {
     tableView.dataSource = self
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
   }
+  private func setupNavigationController() {
+    self.navigationItem.title = "Space-X launches"
+  }
+  private func setupSearchController() {
+    self.searchController.searchResultsUpdater = self
+    self.searchController.obscuresBackgroundDuringPresentation = false
+    self.searchController.hidesNavigationBarDuringPresentation = true
+    self.searchController.searchBar.placeholder = "Search for launches"
+    self.searchController.searchBar.delegate = self
+    // self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+    self.navigationItem.searchController = searchController
+    self.definesPresentationContext = false
+    self.navigationItem.hidesSearchBarWhenScrolling = false
+  }
 
   func configDateFromatter() {
     dateFormatter.dateStyle = .medium
@@ -85,20 +102,20 @@ class LaunchesViewController: UIViewController {
 // MARK: - TableView functions
 extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return launchesViewModel.launches.count
+    return launchesViewModel.allLaunches.count
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: LaunchViewCell.sellIdentifier, for: indexPath) as? LaunchViewCell else {
       fatalError("Unable to dequeue LaunchCell in LaunchesView Controller")
     }
-    cell.configure(with: launchesViewModel.launches[indexPath.row], rowNum: indexPath.row )
+    cell.configure(with: launchesViewModel.allLaunches[indexPath.row], rowNum: indexPath.row )
     return cell
   }
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if indexPath.row == launchesViewModel.launches.count - 1 {
+    if indexPath.row == launchesViewModel.allLaunches.count - 1 {
       self.launchesViewModel.loadMoreData()
       refreshControl.endRefreshing()
-      }
+    }
   }
 }
 // MARK: - Loading functions
@@ -124,3 +141,10 @@ extension LaunchesViewController {
     }
   }
 }
+  // MARK: - Search controller Functions
+  extension LaunchesViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+      self.launchesViewModel.updateSearchController(searchBarText: searchController.searchBar.text)
+      self.launchesViewModel.searchText(textString: searchController.searchBar.text)
+    }
+  }
