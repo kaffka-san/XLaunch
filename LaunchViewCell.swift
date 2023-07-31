@@ -7,7 +7,8 @@
 
 import UIKit
 import SDWebImage
-
+import Nuke
+import NukeExtensions
 class LaunchViewCell: UITableViewCell {
   static let sellIdentifier = "launchCell"
   // MARK: - Variables
@@ -40,8 +41,31 @@ class LaunchViewCell: UITableViewCell {
   func configure(with launch: Launch) {
     self.launch = launch
     self.launchName.text = launch.name
-    self.patchImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-    self.patchImageView.sd_setImage(with: self.launch.imageUrl)
+    if let imageUrl = self.launch.imageUrl {
+      ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
+        guard let self = self else {
+          return
+        }
+        switch response {
+        case .failure:
+          self.patchImageView.image = ImageLoadingOptions.shared.failureImage
+          self.patchImageView.contentMode = .scaleAspectFit
+        case let .success(imageResponse):
+          self.patchImageView.image = imageResponse.image
+          self.patchImageView.contentMode = .scaleAspectFill
+        }
+      }
+      DataLoader.sharedUrlCache.diskCapacity = 0
+      let pipeline = ImagePipeline {
+        let dataCache = try? DataCache(name: imageUrl.absoluteString)
+        dataCache?.sizeLimit = 200 * 1024 * 1024
+        $0.dataCache = dataCache
+      }
+      ImagePipeline.shared = pipeline
+    }
+
+//    self.patchImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
+//    self.patchImageView.sd_setImage(with: self.launch.imageUrl)
   }
   // MARK: - Setup UI
   private func setupUI() {

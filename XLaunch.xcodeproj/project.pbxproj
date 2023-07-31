@@ -10,6 +10,9 @@
 		305DC7F92A77D83A003295D5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7F82A77D83A003295D5 /* NetworkManager.swift */; };
 		305DC7FB2A77DA20003295D5 /* LaunchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7FA2A77DA20003295D5 /* LaunchError.swift */; };
 		305DC7FD2A77DA4E003295D5 /* LaunchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */; };
+		305DC8002A77F855003295D5 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC7FF2A77F855003295D5 /* Nuke */; };
+		305DC8022A77F855003295D5 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC8012A77F855003295D5 /* NukeExtensions */; };
+		305DC8042A77F855003295D5 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC8032A77F855003295D5 /* NukeUI */; };
 		30D4F44D2A771B0900614143 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F44C2A771B0900614143 /* AppDelegate.swift */; };
 		30D4F44F2A771B0900614143 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F44E2A771B0900614143 /* SceneDelegate.swift */; };
 		30D4F4512A771B0900614143 /* LaunchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4502A771B0900614143 /* LaunchesViewController.swift */; };
@@ -43,6 +46,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				30D4F4802A7746DB00614143 /* SDWebImage in Frameworks */,
+				305DC8002A77F855003295D5 /* Nuke in Frameworks */,
+				305DC8022A77F855003295D5 /* NukeExtensions in Frameworks */,
+				305DC8042A77F855003295D5 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +160,9 @@
 			name = XLaunch;
 			packageProductDependencies = (
 				30D4F47F2A7746DB00614143 /* SDWebImage */,
+				305DC7FF2A77F855003295D5 /* Nuke */,
+				305DC8012A77F855003295D5 /* NukeExtensions */,
+				305DC8032A77F855003295D5 /* NukeUI */,
 			);
 			productName = XLaunch;
 			productReference = 30D4F4492A771B0900614143 /* XLaunch.app */;
@@ -185,6 +194,7 @@
 			mainGroup = 30D4F4402A771B0900614143;
 			packageReferences = (
 				30D4F47E2A7746DB00614143 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 30D4F44A2A771B0900614143 /* Products */;
 			projectDirPath = "";
@@ -458,6 +468,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
 		30D4F47E2A7746DB00614143 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
@@ -469,6 +487,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		305DC7FF2A77F855003295D5 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		305DC8012A77F855003295D5 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		305DC8032A77F855003295D5 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
 		30D4F47F2A7746DB00614143 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 30D4F47E2A7746DB00614143 /* XCRemoteSwiftPackageReference "SDWebImage" */;
