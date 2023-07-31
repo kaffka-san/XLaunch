@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct Message: Codable {
+struct BodyParameters: Codable {
   var options: Option
 }
 struct Option: Codable {
@@ -23,34 +23,22 @@ enum XLaunchApi {
     var request = URLRequest(url: url)
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpMethod = "POST"
-    let message = Message(options: Option(limit: 50, page: 1, select: ["id", "name", "date_utc","detail", "success","links.patch.large", "flight_number"]))
+    let bodyParameters = BodyParameters(options: Option(limit: 50, page: 1, select: ["id", "name", "date_unix", "date_utc", "detail", "success", "links.patch.large", "flight_number"]))
 
     do {
-      let data = try JSONEncoder().encode(message)
+      let data = try JSONEncoder().encode(bodyParameters)
       print("data \(data)")
       request.httpBody = data
       } catch {
         print("cant encode message")
         return nil
       }
-
     return request
   }
 
-  private var path: String {
-    switch self {
-    case .fetchLaunches:
-      return Constants.pathLaunches
-    }
-  }
 
   private var url: URL? {
-    var components = URLComponents()
-    components.scheme = Constants.scheme
-    components.host = Constants.host
-    components.path = self.path
-    //components.queryItems = []
-    print("url compo \(components.string)")
-    return components.url
+    guard let url = URL(string: "https://api.spacexdata.com/v4/launches/query") else { fatalError("baseURL could not be configured.") }
+    return url
   }
 }
