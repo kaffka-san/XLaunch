@@ -14,7 +14,7 @@ struct Document: Codable {
 }
 struct Launch: Codable {
   var name: String
-  var dateUtc: Date
+  //var dateUtc: Date
   var details: String?
   var success: Bool?
   var flightNumber: Int?
@@ -33,7 +33,7 @@ struct Patch: Codable {
   var large: String?
 }
 
-extension Launch {
+/*extension Launch {
   public static func getMockArray() -> [Launch] {
     return [
       Launch(name: "DemoSat1", dateUtc: Date.now, details: "Successful first stage burn and transition to second stage.", success: true, flightNumber: 1, links: Link(patch: Patch(large: "https://images2.imgbox.com/5b/02/QcxHUb5V_o.png"))),
@@ -43,3 +43,4 @@ extension Launch {
     ]
   }
 }
+*/

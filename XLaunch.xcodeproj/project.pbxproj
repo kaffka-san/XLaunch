@@ -15,6 +15,8 @@
 		30D4F4642A7728EC00614143 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4632A7728EC00614143 /* Launch.swift */; };
 		30D4F4802A7746DB00614143 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 30D4F47F2A7746DB00614143 /* SDWebImage */; };
 		30D4F4822A774E3F00614143 /* LaunchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4812A774E3F00614143 /* LaunchViewCell.swift */; };
+		30D4F4872A77A80500614143 /* XLaunchApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4862A77A80500614143 /* XLaunchApi.swift */; };
+		30D4F4892A77A85300614143 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F4882A77A85300614143 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		30D4F45A2A771B0A00614143 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		30D4F4632A7728EC00614143 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		30D4F4812A774E3F00614143 /* LaunchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewCell.swift; sourceTree = "<group>"; };
+		30D4F4862A77A80500614143 /* XLaunchApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XLaunchApi.swift; sourceTree = "<group>"; };
+		30D4F4882A77A85300614143 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 		30D4F44B2A771B0900614143 /* XLaunch */ = {
 			isa = PBXGroup;
 			children = (
+				30D4F4852A77A77F00614143 /* Api */,
 				30D4F4672A77299B00614143 /* Supporting */,
 				30D4F4652A77294E00614143 /* Model */,
 				30D4F4682A7729DC00614143 /* Screens */,
@@ -83,6 +88,7 @@
 			children = (
 				30D4F44E2A771B0900614143 /* SceneDelegate.swift */,
 				30D4F44C2A771B0900614143 /* AppDelegate.swift */,
+				30D4F4882A77A85300614143 /* Constants.swift */,
 			);
 			name = Supporting;
 			path = ..;
@@ -112,6 +118,15 @@
 			children = (
 			);
 			name = LaunchDetail;
+			sourceTree = "<group>";
+		};
+		30D4F4852A77A77F00614143 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4862A77A80500614143 /* XLaunchApi.swift */,
+			);
+			name = Api;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,6 +232,8 @@
 				30D4F44D2A771B0900614143 /* AppDelegate.swift in Sources */,
 				30D4F4642A7728EC00614143 /* Launch.swift in Sources */,
 				30D4F4822A774E3F00614143 /* LaunchViewCell.swift in Sources */,
+				30D4F4892A77A85300614143 /* Constants.swift in Sources */,
+				30D4F4872A77A80500614143 /* XLaunchApi.swift in Sources */,
 				30D4F44F2A771B0900614143 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
