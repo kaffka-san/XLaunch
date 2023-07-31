@@ -38,9 +38,9 @@ class LaunchViewCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  func configure(with launch: Launch) {
+  func configure(with launch: Launch, rowNum: Int) {
     self.launch = launch
-    self.launchName.text = launch.name
+    self.launchName.text = "launch.name \(rowNum)"
     if let imageUrl = self.launch.imageUrl {
       ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
         guard let self = self else {

@@ -12,8 +12,8 @@ final class NetworkManager {
   private let cache = NSCache<NSString, UIImage>()
   private init() {}
 
-  static func fetchLaunches (with route: XLaunchApi, completion: @escaping (Result <Document, LaunchServiceError>) -> Void) {
-    guard let request = route.request else {
+  static func fetchLaunches (with route: XLaunchApi, page: Int, completion: @escaping (Result <Document, LaunchServiceError>) -> Void) {
+    guard let request = route.getRequest(page: page) else {
       completion(.failure(.invalidURL))
       return }
     URLSession.shared.dataTask(with: request) { data, response, error in

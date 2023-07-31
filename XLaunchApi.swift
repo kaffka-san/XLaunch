@@ -14,20 +14,16 @@ struct Option: Codable {
   var page: Int
   var select: [String]
 }
-enum XLaunchApi {
-  case fetchLaunches
-  var request: URLRequest? {
+struct XLaunchApi {
+  func getRequest(page: Int) -> URLRequest? {
     guard let url = self.url else {
       return nil }
-    print("url \(url)")
     var request = URLRequest(url: url)
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpMethod = "POST"
-    let bodyParameters = BodyParameters(options: Option(limit: 50, page: 1, select: ["id", "name", "date_unix", "date_utc", "detail", "success", "links.patch.large", "flight_number"]))
-
+    let bodyParameters = BodyParameters(options: Option(limit: 12, page: page, select: ["id", "name", "date_unix", "date_utc", "detail", "success", "links.patch.large", "flight_number"]))
     do {
       let data = try JSONEncoder().encode(bodyParameters)
-      print("data \(data)")
       request.httpBody = data
       } catch {
         print("cant encode message")
