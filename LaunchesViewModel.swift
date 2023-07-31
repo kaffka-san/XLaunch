@@ -10,6 +10,7 @@ import UIKit
 class LaunchesViewModel {
   // MARK: - Variables
   var onLoadingsUpdated: (() -> Void)?
+  var onChangeSortParameterUpdated: (() -> Void)?
   var page = 1
   var searchedText = ""
   var hasNextPage = true
@@ -83,6 +84,51 @@ class LaunchesViewModel {
         }
       }
     }
+  }
+  // MARK: - Sorting parameters")
+  class DataActionSheet {
+    var name = "✔ Name 🔼"
+    var date = "Date"
+    var flightNumber = "Flight number"
+    var sortBy = SortBy.name
+    var isAscending = true
+    var sortIcon = "🔼"
+    func toggleSort() {
+      isAscending.toggle()
+      sortIcon = isAscending ? "🔼" : "🔽"
+    }
+    func setLabelTextActionSheet() {
+      print("sort by \(sortBy)")
+      DispatchQueue.main.async {
+        switch self.sortBy {
+        case .name:
+          self.name = "✔ Name \(self.sortIcon)"
+          self.date = "Date"
+          self.flightNumber = "Flight number"
+          print("name: \(self.name)")
+        case .flightNumber:
+          self.name = "Name"
+          self.date = "Date"
+          self.flightNumber = "✔ Flight number \(self.sortIcon)"
+          print("fkight num: \(self.flightNumber)")
+        case .date:
+          self.name = "Name"
+          self.date = "✔ Date \(self.sortIcon)"
+          self.flightNumber = "Flight number"
+          print("date: \(self.date)")
+        }
+      }
+    }
+  }
+  var labelText = DataActionSheet() {
+    didSet {
+      self.onChangeSortParameterUpdated?()
+    }
+  }
+  enum SortBy: String {
+    case name = "Name"
+    case flightNumber = "Flight Number"
+    case date = "Date"
   }
 }
 // MARK: - Search functions
