@@ -23,11 +23,7 @@ class LaunchesViewModel {
   }
   private(set) var allLaunches: [Launch] = [] {
     didSet {
-      if  error != nil {
-        applicationState = .error
-      } else if isLoading && error == nil {
-        applicationState = .loading
-      } else if allLaunches.isEmpty && !searchedText.isEmpty && error == nil {
+      if allLaunches.isEmpty && !searchedText.isEmpty && error == nil {
         applicationState = .noResults
       } else if allLaunches.isEmpty && searchedText.isEmpty && error == nil {
         applicationState = .empty
@@ -37,8 +33,8 @@ class LaunchesViewModel {
       print("application state: === \(applicationState)")
     }
   }
-  private(set) var filteredLaunches: [Launch] = []
-  // MARK: - Initializer
+  // private(set) var filteredLaunches: [Launch] = []
+  // MARK: - Init
   init() {
     self.fetchLaunches()
   }
@@ -59,7 +55,7 @@ class LaunchesViewModel {
     error = nil
     isLoading = true
     let route = XLaunchApi()
-    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText, sortParameter: sortService.sortBy) {[weak self] result in
+    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText, sortParameter: sortService.getSortParameter(), sortOrder: sortService.getSortOrder()) {[weak self] result in
       DispatchQueue.main.async {
         self?.isLoading = false
         switch result {
@@ -78,61 +74,17 @@ class LaunchesViewModel {
           switch error {
           case .invalidURL: print("invalid Url")
           case .invalidResponse:  print("invalid invalidResponse")
-          case .invalidData: print("invalidDatal")
+          case .invalidData: print("invalidData")
           case .unableToComplete: print("unableToComplete")
           }
         }
       }
     }
   }
-  // MARK: - Sorting parameters")
-
-  class SortService {
-    var name = "✔ Name 🔼"
-    var date = "Date"
-    var flightNumber = "Flight number"
-    var sortOrder = SortOrder.asc
-    var sortBy = SortBy.name {
-      didSet {
-        if sortBy == oldValue {
-          toggleSortOrder()
-        }
-      }
-    }
-    var sortIcon = "🔼"
-    func toggleSortOrder() {
-      sortOrder = sortOrder == .asc ? .desc : .asc
-      sortIcon = sortOrder == .asc ? "🔼" : "🔽"
-    }
-    func setLabelTextActionSheet() {
-      print("sort by \(sortBy)")
-      DispatchQueue.main.async {
-        switch self.sortBy {
-        case .name:
-          self.name = "✔ Name \(self.sortIcon)"
-          self.date = "Date"
-          self.flightNumber = "Flight number"
-          print("name: \(self.name)")
-        case .flightNumber:
-          self.name = "Name"
-          self.date = "Date"
-          self.flightNumber = "✔ Flight number \(self.sortIcon)"
-          print("flight num: \(self.flightNumber)")
-        case .date:
-          self.name = "Name"
-          self.date = "✔ Date \(self.sortIcon)"
-          self.flightNumber = "Flight number"
-          print("date: \(self.date)")
-        }
-      }
-    }
-  }
-  func toogleSortOrder(){
-
-  }
+  // MARK: - Sorting parameters
   var sortService = SortService()
-  func sortLaunches() {
-    sortService.setLabelTextActionSheet()
+  func sortLaunches(by sortParameter: SortBy) {
+    sortService.setLabelTextActionSheet(for: sortParameter)
     page = 1
     fetchLaunches()
   }
@@ -145,7 +97,7 @@ extension LaunchesViewModel {
     return isActive && !searchText.isEmpty
   }
   public func updateSearchController(searchBarText: String?) {
-    self.filteredLaunches = allLaunches
+    // self.filteredLaunches = allLaunches
   }
 }
 

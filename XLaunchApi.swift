@@ -29,16 +29,18 @@ struct Option: Codable {
 }
 
 struct XLaunchApi {
-  func getRequest(page: Int, searchedText: String?, sortParameter: SortBy) -> URLRequest? {
-    guard let url = self.url else {
-      return nil }
-    var request = URLRequest(url: url)
+  func getRequest(page: Int, searchedText: String?, sortParameter: SortBy, sortOrder: SortOrder) -> URLRequest? {
+    var request = URLRequest(url: self.url)
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpMethod = "POST"
-    let bodyParameters = BodyParameters(options: Option(limit: 12, page: page,
+    let bodyParameters = BodyParameters(
+      options: Option(
+        limit: 12,
+        page: page,
         select: ["id", "name", "date_unix", "date_utc", "detail", "success", "links.patch.large", "flight_number"],
-        sort: [sortParameter.rawValue : "Asc"]),
-        query: Query(name: Parameters(regex: (searchedText ?? ""), options: "i")))
+        sort: [String(describing: sortParameter): String(describing: sortOrder)]
+      ),
+      query: Query(name: Parameters(regex: (searchedText ?? ""), options: "i")))
     do {
       let data = try JSONEncoder().encode(bodyParameters)
       request.httpBody = data
@@ -50,7 +52,7 @@ struct XLaunchApi {
   }
 
 
-  private var url: URL? {
+  private var url: URL {
     guard let url = URL(string: "https://api.spacexdata.com/v4/launches/query") else { fatalError("baseURL could not be configured.") }
     return url
   }
@@ -58,10 +60,11 @@ struct XLaunchApi {
 
 enum SortBy: String {
   case name = "name"
-  case flightNumber = "flightNumber"
+  case flightNumber = "flight_number"
   case date = "date_unix"
 }
 
 enum SortOrder {
-  case asc, desc
+  case asc
+  case desc
 }

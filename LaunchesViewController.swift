@@ -45,7 +45,7 @@ class LaunchesViewController: UIViewController {
       self?.reloadData()
     }
   }
-  func reloadData(){
+  func reloadData() {
     DispatchQueue.main.async { [weak self] in
       if self?.launchesViewModel.isLoading ?? false {
         self?.showSpinner(onView: self?.view)
@@ -64,20 +64,14 @@ class LaunchesViewController: UIViewController {
   // MARK: - Sorting action sheet
   @objc private func didTapListButton () {
     let alert = UIAlertController(title: "Please choose preferable sorting parameter", message: nil, preferredStyle: .actionSheet)
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.name, style: .default) { _ in
-      self.launchesViewModel.sortService.sortBy = .name
-      self.launchesViewModel.sortLaunches()
-      //self.launchesViewModel.sortService.setLabelTextActionSheet()
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getNameLabelText(), style: .default) { _ in
+      self.launchesViewModel.sortLaunches(by: .name)
     })
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.flightNumber, style: .default) { _ in
-      self.launchesViewModel.sortService.sortBy = .flightNumber
-      self.launchesViewModel.sortLaunches()
-     // self.launchesViewModel.sortService.setLabelTextActionSheet()
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getFlightNumberLabelText(), style: .default) { _ in
+      self.launchesViewModel.sortLaunches(by: .flightNumber)
     })
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.date, style: .default) { _ in
-      self.launchesViewModel.sortService.sortBy = .date
-      self.launchesViewModel.sortLaunches()
-      //self.launchesViewModel.sortService.setLabelTextActionSheet()
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getDateLabelText(), style: .default) { _ in
+      self.launchesViewModel.sortLaunches(by: .date)
     })
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
@@ -92,7 +86,7 @@ class LaunchesViewController: UIViewController {
   }
   func setupTableView() {
     view.addSubview(tableView)
-    tableView.rowHeight = 80
+    tableView.rowHeight = 100
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
@@ -106,6 +100,7 @@ class LaunchesViewController: UIViewController {
   }
   private func setupNavigationController() {
     self.navigationItem.title = "Space-X launches"
+    // self.navigationController?.toolbar.backgroundColor = .systemBackground
   }
   private func setupSearchController() {
     self.searchController.searchResultsUpdater = self
