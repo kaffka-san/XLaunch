@@ -64,17 +64,20 @@ class LaunchesViewController: UIViewController {
   // MARK: - Sorting action sheet
   @objc private func didTapListButton () {
     let alert = UIAlertController(title: "Please choose preferable sorting parameter", message: nil, preferredStyle: .actionSheet)
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.labelText.name, style: .default) { _ in
-      self.launchesViewModel.labelText.sortBy = .name
-      self.launchesViewModel.labelText.setLabelTextActionSheet()
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.name, style: .default) { _ in
+      self.launchesViewModel.sortService.sortBy = .name
+      self.launchesViewModel.sortLaunches()
+      //self.launchesViewModel.sortService.setLabelTextActionSheet()
     })
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.labelText.flightNumber, style: .default) { _ in
-      self.launchesViewModel.labelText.sortBy = .flightNumber
-      self.launchesViewModel.labelText.setLabelTextActionSheet()
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.flightNumber, style: .default) { _ in
+      self.launchesViewModel.sortService.sortBy = .flightNumber
+      self.launchesViewModel.sortLaunches()
+     // self.launchesViewModel.sortService.setLabelTextActionSheet()
     })
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.labelText.date, style: .default) { _ in
-      self.launchesViewModel.labelText.sortBy = .date
-      self.launchesViewModel.labelText.setLabelTextActionSheet()
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.date, style: .default) { _ in
+      self.launchesViewModel.sortService.sortBy = .date
+      self.launchesViewModel.sortLaunches()
+      //self.launchesViewModel.sortService.setLabelTextActionSheet()
     })
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 

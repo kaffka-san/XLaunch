@@ -59,7 +59,7 @@ class LaunchesViewModel {
     error = nil
     isLoading = true
     let route = XLaunchApi()
-    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText) {[weak self] result in
+    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText, sortParameter: sortService.sortBy) {[weak self] result in
       DispatchQueue.main.async {
         self?.isLoading = false
         switch result {
@@ -86,16 +86,23 @@ class LaunchesViewModel {
     }
   }
   // MARK: - Sorting parameters")
-  class DataActionSheet {
+
+  class SortService {
     var name = "✔ Name 🔼"
     var date = "Date"
     var flightNumber = "Flight number"
-    var sortBy = SortBy.name
-    var isAscending = true
+    var sortOrder = SortOrder.asc
+    var sortBy = SortBy.name {
+      didSet {
+        if sortBy == oldValue {
+          toggleSortOrder()
+        }
+      }
+    }
     var sortIcon = "🔼"
-    func toggleSort() {
-      isAscending.toggle()
-      sortIcon = isAscending ? "🔼" : "🔽"
+    func toggleSortOrder() {
+      sortOrder = sortOrder == .asc ? .desc : .asc
+      sortIcon = sortOrder == .asc ? "🔼" : "🔽"
     }
     func setLabelTextActionSheet() {
       print("sort by \(sortBy)")
@@ -110,7 +117,7 @@ class LaunchesViewModel {
           self.name = "Name"
           self.date = "Date"
           self.flightNumber = "✔ Flight number \(self.sortIcon)"
-          print("fkight num: \(self.flightNumber)")
+          print("flight num: \(self.flightNumber)")
         case .date:
           self.name = "Name"
           self.date = "✔ Date \(self.sortIcon)"
@@ -120,15 +127,14 @@ class LaunchesViewModel {
       }
     }
   }
-  var labelText = DataActionSheet() {
-    didSet {
-      self.onChangeSortParameterUpdated?()
-    }
+  func toogleSortOrder(){
+
   }
-  enum SortBy: String {
-    case name = "Name"
-    case flightNumber = "Flight Number"
-    case date = "Date"
+  var sortService = SortService()
+  func sortLaunches() {
+    sortService.setLabelTextActionSheet()
+    page = 1
+    fetchLaunches()
   }
 }
 // MARK: - Search functions
@@ -136,10 +142,10 @@ extension LaunchesViewModel {
   public func inSearchMode(_ searchController: UISearchController) -> Bool {
     let isActive = searchController.isActive
     let searchText = searchController.searchBar.text ?? ""
-
     return isActive && !searchText.isEmpty
   }
   public func updateSearchController(searchBarText: String?) {
     self.filteredLaunches = allLaunches
   }
 }
+
