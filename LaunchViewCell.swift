@@ -11,9 +11,11 @@ import Nuke
 import NukeExtensions
 
 class LaunchViewCell: UITableViewCell {
-  static let sellIdentifier = "launchCell"
   // MARK: - Variables
+  static let sellIdentifier = "launchCell"
   private var launch: Launch!
+
+  // MARK: - UI Components
   private let patchImageView: UIImageView = {
     let launchImageView = UIImageView()
     launchImageView.contentMode = .scaleAspectFit
@@ -21,6 +23,7 @@ class LaunchViewCell: UITableViewCell {
     launchImageView.tintColor = .red
     return launchImageView
   }()
+
   private var launchName: UILabel = {
     let launchLabel = UILabel()
     launchLabel.textColor = .label
@@ -33,62 +36,67 @@ class LaunchViewCell: UITableViewCell {
     launchLabel.text = "Error"
     return launchLabel
   }()
-  // MARK: - Lifecycle
+
+  // MARK: - Init
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.setupUI()
   }
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  func configure(with launch: Launch, rowNum: Int) {
-    self.launch = launch
-    self.patchImageView.image = UIImage(systemName: "questionmark")
-    self.launchName.text = "\(launch.name)\nFlight number: \(String(describing: launch.flightNumber) ?? "")\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))  "
-    if let imageUrl = self.launch.imageUrl {
-      ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
-        guard let self = self else {
-          return
-        }
-        switch response {
-        case .failure:
-          self.patchImageView.image = ImageLoadingOptions.shared.failureImage
-          self.patchImageView.contentMode = .scaleAspectFit
-        case let .success(imageResponse):
-          self.patchImageView.image = imageResponse.image
-          self.patchImageView.contentMode = .scaleAspectFill
-        }
-      }
-      DataLoader.sharedUrlCache.diskCapacity = 0
-      let pipeline = ImagePipeline {
-        let dataCache = try? DataCache(name: imageUrl.absoluteString)
-        dataCache?.sizeLimit = 200 * 1024 * 1024
-        $0.dataCache = dataCache
-      }
-      ImagePipeline.shared = pipeline
+    required init?(coder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
     }
 
-//    self.patchImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-//    self.patchImageView.sd_setImage(with: self.launch.imageUrl)
-  }
   // MARK: - Setup UI
-  private func setupUI() {
-    self.addSubview(patchImageView)
-    self.addSubview(launchName)
-    patchImageView.translatesAutoresizingMaskIntoConstraints = false
-    launchName.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      patchImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-      patchImageView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
-      patchImageView.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
-      patchImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
-      launchName.leadingAnchor.constraint(equalTo: patchImageView.trailingAnchor, constant: 20),
-      launchName.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-      launchName.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-    ])
-  }
-  override func setSelected(_ selected: Bool, animated: Bool) {
-    super.setSelected(selected, animated: animated)
+    func configure(with launch: Launch, rowNum: Int) {
+      self.launch = launch
+      self.patchImageView.image = UIImage(systemName: "questionmark")
+      self.launchName.text = "\(launch.name)\nFlight number: \(String(describing: launch.flightNumber) ?? "")\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))  "
+      if let imageUrl = self.launch.imageUrl {
+        ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
+          guard let self = self else {
+            return
+          }
+          switch response {
+          case .failure:
+            self.patchImageView.image = ImageLoadingOptions.shared.failureImage
+            self.patchImageView.contentMode = .scaleAspectFit
+          case let .success(imageResponse):
+            self.patchImageView.image = imageResponse.image
+            self.patchImageView.contentMode = .scaleAspectFill
+          }
+        }
+        DataLoader.sharedUrlCache.diskCapacity = 0
+        let pipeline = ImagePipeline {
+          let dataCache = try? DataCache(name: imageUrl.absoluteString)
+          dataCache?.sizeLimit = 200 * 1024 * 1024
+          $0.dataCache = dataCache
+        }
+        ImagePipeline.shared = pipeline
+      }
+
+      //    self.patchImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
+      //    self.patchImageView.sd_setImage(with: self.launch.imageUrl)
+    }
+
+    // MARK: - Setup UI
+    private func setupUI() {
+      self.addSubview(patchImageView)
+      self.addSubview(launchName)
+      patchImageView.translatesAutoresizingMaskIntoConstraints = false
+      launchName.translatesAutoresizingMaskIntoConstraints = false
+      NSLayoutConstraint.activate([
+        patchImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        patchImageView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
+        patchImageView.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
+        patchImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
+        launchName.leadingAnchor.constraint(equalTo: patchImageView.trailingAnchor, constant: 20),
+        launchName.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+        launchName.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+      ])
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+      super.setSelected(selected, animated: animated)
       // Configure the view for the selected state
+    }
   }
-}
