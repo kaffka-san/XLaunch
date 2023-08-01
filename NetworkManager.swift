@@ -9,11 +9,9 @@ import UIKit
 
 final class NetworkManager {
   static let shared = NetworkManager()
-  private let cache = NSCache<NSString, UIImage>()
   private init() {}
-
-  static func fetchLaunches (with route: XLaunchApi, page: Int, searchedText: String?, completion: @escaping (Result <Document, LaunchServiceError>) -> Void) {
-    guard let request = route.getRequest(page: page, searchedText: searchedText) else {
+  static func fetchLaunches (with route: XLaunchApi, page: Int, searchedText: String?, sortParameter: SortBy, sortOrder: SortOrder, completion: @escaping (Result <Document, LaunchServiceError>) -> Void) {
+    guard let request = route.getRequest(page: page, searchedText: searchedText, sortParameter: sortParameter, sortOrder: sortOrder) else {
       completion(.failure(.invalidURL))
       return }
     URLSession.shared.dataTask(with: request) { data, response, error in

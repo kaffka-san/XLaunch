@@ -9,6 +9,7 @@ import UIKit
 import SDWebImage
 import Nuke
 import NukeExtensions
+
 class LaunchViewCell: UITableViewCell {
   static let sellIdentifier = "launchCell"
   // MARK: - Variables
@@ -25,8 +26,10 @@ class LaunchViewCell: UITableViewCell {
     launchLabel.textColor = .label
     launchLabel.textAlignment = .left
     launchLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-    // launchLabel.adjustsFontSizeToFitWidth = true
-    // launchLabel.lineBreakMode = .byCharWrapping
+    launchLabel.adjustsFontSizeToFitWidth = true
+    launchLabel.lineBreakMode = .byWordWrapping
+    launchLabel.numberOfLines = 3
+
     launchLabel.text = "Error"
     return launchLabel
   }()
@@ -41,7 +44,7 @@ class LaunchViewCell: UITableViewCell {
   func configure(with launch: Launch, rowNum: Int) {
     self.launch = launch
     self.patchImageView.image = UIImage(systemName: "questionmark")
-    self.launchName.text = "\(launch.name) \(rowNum)"
+    self.launchName.text = "\(launch.name)\nFlight number: \(String(describing: launch.flightNumber) ?? "")\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))  "
     if let imageUrl = self.launch.imageUrl {
       ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
         guard let self = self else {

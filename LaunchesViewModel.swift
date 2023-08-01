@@ -10,6 +10,7 @@ import UIKit
 class LaunchesViewModel {
   // MARK: - Variables
   var onLoadingsUpdated: (() -> Void)?
+  var onChangeSortParameterUpdated: (() -> Void)?
   var page = 1
   var searchedText = ""
   var hasNextPage = true
@@ -22,11 +23,7 @@ class LaunchesViewModel {
   }
   private(set) var allLaunches: [Launch] = [] {
     didSet {
-      if  error != nil {
-        applicationState = .error
-      } else if isLoading && error == nil {
-        applicationState = .loading
-      } else if allLaunches.isEmpty && !searchedText.isEmpty && error == nil {
+      if allLaunches.isEmpty && !searchedText.isEmpty && error == nil {
         applicationState = .noResults
       } else if allLaunches.isEmpty && searchedText.isEmpty && error == nil {
         applicationState = .empty
@@ -36,8 +33,8 @@ class LaunchesViewModel {
       print("application state: === \(applicationState)")
     }
   }
-  private(set) var filteredLaunches: [Launch] = []
-  // MARK: - Initializer
+  // private(set) var filteredLaunches: [Launch] = []
+  // MARK: - Init
   init() {
     self.fetchLaunches()
   }
@@ -58,7 +55,7 @@ class LaunchesViewModel {
     error = nil
     isLoading = true
     let route = XLaunchApi()
-    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText) {[weak self] result in
+    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText, sortParameter: sortService.getSortParameter(), sortOrder: sortService.getSortOrder()) {[weak self] result in
       DispatchQueue.main.async {
         self?.isLoading = false
         switch result {
@@ -77,12 +74,19 @@ class LaunchesViewModel {
           switch error {
           case .invalidURL: print("invalid Url")
           case .invalidResponse:  print("invalid invalidResponse")
-          case .invalidData: print("invalidDatal")
+          case .invalidData: print("invalidData")
           case .unableToComplete: print("unableToComplete")
           }
         }
       }
     }
+  }
+  // MARK: - Sorting parameters
+  var sortService = SortService()
+  func sortLaunches(by sortParameter: SortBy) {
+    sortService.setLabelTextActionSheet(for: sortParameter)
+    page = 1
+    fetchLaunches()
   }
 }
 // MARK: - Search functions
@@ -90,10 +94,10 @@ extension LaunchesViewModel {
   public func inSearchMode(_ searchController: UISearchController) -> Bool {
     let isActive = searchController.isActive
     let searchText = searchController.searchBar.text ?? ""
-
     return isActive && !searchText.isEmpty
   }
   public func updateSearchController(searchBarText: String?) {
-    self.filteredLaunches = allLaunches
+    // self.filteredLaunches = allLaunches
   }
 }
+

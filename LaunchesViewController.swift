@@ -42,13 +42,16 @@ class LaunchesViewController: UIViewController {
     setUPRefreshControl()
     self.setupSearchController()
     self.launchesViewModel.onLoadingsUpdated = { [weak self] in
-      DispatchQueue.main.async { [weak self] in
-        if self?.launchesViewModel.isLoading ?? false {
-          self?.showSpinner(onView: self?.view)
-        } else {
-          self?.removeSpinner()
-          self?.tableView.reloadData()
-        }
+      self?.reloadData()
+    }
+  }
+  func reloadData() {
+    DispatchQueue.main.async { [weak self] in
+      if self?.launchesViewModel.isLoading ?? false {
+        self?.showSpinner(onView: self?.view)
+      } else {
+        self?.removeSpinner()
+        self?.tableView.reloadData()
       }
     }
   }
@@ -58,6 +61,23 @@ class LaunchesViewController: UIViewController {
     launchesViewModel.fetchLaunches()
     refreshControl.endRefreshing()
   }
+  // MARK: - Sorting action sheet
+  @objc private func didTapListButton () {
+    let alert = UIAlertController(title: "Please choose preferable sorting parameter", message: nil, preferredStyle: .actionSheet)
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getNameLabelText(), style: .default) { _ in
+      self.launchesViewModel.sortLaunches(by: .name)
+    })
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getFlightNumberLabelText(), style: .default) { _ in
+      self.launchesViewModel.sortLaunches(by: .flightNumber)
+    })
+    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getDateLabelText(), style: .default) { _ in
+      self.launchesViewModel.sortLaunches(by: .date)
+    })
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+    self.present(alert, animated: true, completion: nil)
+  }
+
   // MARK: - Setup UI
   func setUPRefreshControl() {
     refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -66,7 +86,7 @@ class LaunchesViewController: UIViewController {
   }
   func setupTableView() {
     view.addSubview(tableView)
-    tableView.rowHeight = 80
+    tableView.rowHeight = 100
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
@@ -80,6 +100,7 @@ class LaunchesViewController: UIViewController {
   }
   private func setupNavigationController() {
     self.navigationItem.title = "Space-X launches"
+    // self.navigationController?.toolbar.backgroundColor = .systemBackground
   }
   private func setupSearchController() {
     self.searchController.searchResultsUpdater = self
@@ -87,7 +108,7 @@ class LaunchesViewController: UIViewController {
     self.searchController.hidesNavigationBarDuringPresentation = true
     self.searchController.searchBar.placeholder = "Search for launches"
     self.searchController.searchBar.delegate = self
-    // self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(didTapListButton))
     self.navigationItem.searchController = searchController
     self.definesPresentationContext = false
     self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -141,10 +162,10 @@ extension LaunchesViewController {
     }
   }
 }
-  // MARK: - Search controller Functions
-  extension LaunchesViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    func updateSearchResults(for searchController: UISearchController) {
-      self.launchesViewModel.updateSearchController(searchBarText: searchController.searchBar.text)
-      self.launchesViewModel.searchText(textString: searchController.searchBar.text)
-    }
+// MARK: - Search controller Functions
+extension LaunchesViewController: UISearchResultsUpdating, UISearchBarDelegate {
+  func updateSearchResults(for searchController: UISearchController) {
+    self.launchesViewModel.updateSearchController(searchBarText: searchController.searchBar.text)
+    self.launchesViewModel.searchText(textString: searchController.searchBar.text)
   }
+}
