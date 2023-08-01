@@ -10,40 +10,43 @@ import UIKit
 class LaunchesViewModel {
   // MARK: - Variables
   var onLoadingsUpdated: (() -> Void)?
-  var onChangeSortParameterUpdated: (() -> Void)?
   var page = 1
   var searchedText = ""
   var hasNextPage = true
-  var applicationState = ApplicationState.empty
-  var error: LaunchServiceError?
-  var isLoading = false {
+  var applicationState = ApplicationState.empty {
     didSet {
-      self.onLoadingsUpdated?()
+      DispatchQueue.main.async {
+        self.onLoadingsUpdated?()
+      }
     }
   }
+  var error: LaunchServiceError?
+
   private(set) var allLaunches: [Launch] = [] {
     didSet {
       if allLaunches.isEmpty && !searchedText.isEmpty && error == nil {
         applicationState = .noResults
       } else if allLaunches.isEmpty && searchedText.isEmpty && error == nil {
         applicationState = .empty
-      } else if error == nil, !isLoading, !allLaunches.isEmpty {
+      } else if error == nil, !allLaunches.isEmpty {
         applicationState = .data
       }
-      print("application state: === \(applicationState)")
     }
   }
-  // private(set) var filteredLaunches: [Launch] = []
+
   // MARK: - Init
   init() {
     self.fetchLaunches()
   }
+
+  // MARK: - Fetching Functions
   func loadMoreData() {
     if hasNextPage {
       page += 1
       fetchLaunches()
     }
   }
+
   func searchText(textString: String?) {
     if let textString {
       page = 1
@@ -51,13 +54,13 @@ class LaunchesViewModel {
       fetchLaunches()
     }
   }
+
   func fetchLaunches() {
     error = nil
-    isLoading = true
+    applicationState = .loading
     let route = XLaunchApi()
     NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText, sortParameter: sortService.getSortParameter(), sortOrder: sortService.getSortOrder()) {[weak self] result in
       DispatchQueue.main.async {
-        self?.isLoading = false
         switch result {
         case .success(let document):
           if self?.page == 1 {
@@ -67,7 +70,6 @@ class LaunchesViewModel {
           }
           self?.page = document.page
           self?.hasNextPage = document.hasNextPage
-
         case .failure(let error):
           self?.error = error
           self?.applicationState = .error
@@ -81,6 +83,7 @@ class LaunchesViewModel {
       }
     }
   }
+
   // MARK: - Sorting parameters
   var sortService = SortService()
   func sortLaunches(by sortParameter: SortBy) {
@@ -89,15 +92,3 @@ class LaunchesViewModel {
     fetchLaunches()
   }
 }
-// MARK: - Search functions
-extension LaunchesViewModel {
-  public func inSearchMode(_ searchController: UISearchController) -> Bool {
-    let isActive = searchController.isActive
-    let searchText = searchController.searchBar.text ?? ""
-    return isActive && !searchText.isEmpty
-  }
-  public func updateSearchController(searchBarText: String?) {
-    // self.filteredLaunches = allLaunches
-  }
-}
-
