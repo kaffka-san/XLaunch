@@ -37,7 +37,7 @@ struct XLaunchApi {
       options: Option(
         limit: 12,
         page: page,
-        select: ["id", "name", "date_unix", "date_utc", "detail", "success", "links.patch.large", "flight_number"],
+        select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch.large", "flight_number"],
         sort: [String(describing: sortParameter): String(describing: sortOrder)]
       ),
       query: Query(name: Parameters(regex: (searchedText ?? ""), options: "i")))

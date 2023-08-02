@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import SDWebImage
 
 class LaunchesViewController: UIViewController {
@@ -148,7 +149,7 @@ class LaunchesViewController: UIViewController {
   func setupStateView() {
     genericEmptyStateView.delegate = self
   }
-// MARK: - Update view.bounds for the Subview
+  // MARK: - Update view.bounds for the Subview
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
@@ -179,6 +180,14 @@ extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
       refreshControl.endRefreshing()
     }
   }
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    self.tableView.deselectRow(at: indexPath, animated: true)
+    let launch = self.launchesViewModel.allLaunches[indexPath.row]
+    let detailLaunchViewModel = DetailLaunchViewModel(launch)
+    let swiftUIView = DetailView(detailLaunchViewModel: detailLaunchViewModel) // swiftUIView is View
+    let detailViewVC = UIHostingController(rootView: swiftUIView)
+    self.navigationController?.pushViewController(detailViewVC, animated: true)
+  }
 }
 
 // MARK: - Loading functions
@@ -190,7 +199,6 @@ extension LaunchesViewController {
     let activityIndicator = UIActivityIndicatorView.init(style: .medium)
     activityIndicator.startAnimating()
     activityIndicator.center = spinnerView.center
-
     DispatchQueue.main.async {
       spinnerView.addSubview(activityIndicator)
       onView.addSubview(spinnerView)
