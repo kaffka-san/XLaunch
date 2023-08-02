@@ -86,7 +86,7 @@ class LaunchesViewModel {
 
   // MARK: - Sorting parameters
   var sortService = SortService()
-  func sortLaunches(by sortParameter: SortBy) {
+  func sortLaunches(by sortParameter: SortParameter) {
     sortService.setLabelTextActionSheet(for: sortParameter)
     page = 1
     fetchLaunches()

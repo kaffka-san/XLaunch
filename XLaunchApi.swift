@@ -29,7 +29,7 @@ struct Option: Codable {
 }
 
 struct XLaunchApi {
-  func getRequest(page: Int, searchedText: String?, sortParameter: SortBy, sortOrder: SortOrder) -> URLRequest? {
+  func getRequest(page: Int, searchedText: String?, sortParameter: SortParameter, sortOrder: SortOrder) -> URLRequest? {
     var request = URLRequest(url: self.url)
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpMethod = "POST"
@@ -38,7 +38,7 @@ struct XLaunchApi {
         limit: 12,
         page: page,
         select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch.large", "flight_number"],
-        sort: [String(describing: sortParameter): String(describing: sortOrder)]
+        sort: [sortParameter.rawValue: String(describing: sortOrder)]
       ),
       query: Query(name: Parameters(regex: (searchedText ?? ""), options: "i")))
     do {
@@ -58,7 +58,7 @@ struct XLaunchApi {
   }
 }
 
-enum SortBy: String {
+enum SortParameter: String, Codable {
   case name = "name"
   case flightNumber = "flight_number"
   case date = "date_unix"
