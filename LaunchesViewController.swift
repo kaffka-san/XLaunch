@@ -115,7 +115,6 @@ class LaunchesViewController: UIViewController {
   }
   func setupTableView() {
     view.addSubview(tableView)
-    tableView.rowHeight = 100
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
@@ -148,7 +147,6 @@ class LaunchesViewController: UIViewController {
   // MARK: - App state
   func setupStateView() {
     genericEmptyStateView.delegate = self
-
   }
 // MARK: - Update view.bounds for the Subview
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

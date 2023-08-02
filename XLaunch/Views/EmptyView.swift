@@ -9,7 +9,7 @@ import UIKit
 
 class EmptyStateView: UIView {
   // MARK: - UI Components
-  private let messageLabel = cTitleLabel(textAlignment: .center, fontSize: 28)
+  private let messageLabel = TitleLabel(textAlignment: .center, fontSize: 28)
   private let logoImageView = UIImageView()
   private var retryButton = UIButton()
 
@@ -39,9 +39,9 @@ class EmptyStateView: UIView {
   // MARK: - Setup UI
   private func configure() {
     self.backgroundColor = .systemBackground
-   addSubview(messageLabel)
-   addSubview(logoImageView)
-   addSubview(retryButton)
+    addSubview(messageLabel)
+    addSubview(logoImageView)
+    addSubview(retryButton)
     configureMessageLabel()
     configureLogoImageView()
     configureRetryButtonView()
@@ -49,7 +49,7 @@ class EmptyStateView: UIView {
 
   private func configureMessageLabel() {
     messageLabel.numberOfLines = 3
-    messageLabel.textColor = .secondaryLabel
+    messageLabel.textColor = .label
     messageLabel.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       messageLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -60,7 +60,6 @@ class EmptyStateView: UIView {
   }
 
   private func configureRetryButtonView() {
-    //retryButton.backgroundColor = .systemBlue
     retryButton.configuration = .filled()
     retryButton.configuration?.cornerStyle = .capsule
     retryButton.configuration?.baseBackgroundColor = .systemBlue
@@ -70,9 +69,9 @@ class EmptyStateView: UIView {
     retryButton.addTarget(self, action: #selector(retry), for: .touchUpInside)
 
     NSLayoutConstraint.activate([
-      retryButton.bottomAnchor.constraint(equalTo: superview?.safeAreaLayoutGuide.bottomAnchor ?? self.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-      retryButton.leadingAnchor.constraint(equalTo: superview?.leadingAnchor ??  self.leadingAnchor, constant: 80  ),
-      retryButton.trailingAnchor.constraint(equalTo: superview?.trailingAnchor ?? self.trailingAnchor, constant: -80),
+      retryButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+      retryButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 80  ),
+      retryButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -80),
       retryButton.heightAnchor.constraint(equalToConstant: 50)
     ])
   }
@@ -88,7 +87,7 @@ class EmptyStateView: UIView {
     ])
   }
 
-// MARK: - Delegate method
+  // MARK: - Delegate method
   @objc func retry(sender: UIButton) {
     delegate?.didTapButton()
   }

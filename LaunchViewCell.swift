@@ -28,13 +28,24 @@ class LaunchViewCell: UITableViewCell {
     let launchLabel = UILabel()
     launchLabel.textColor = .label
     launchLabel.textAlignment = .left
-    launchLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+    launchLabel.font = UIFont.preferredFont(forTextStyle: .headline)
     launchLabel.adjustsFontSizeToFitWidth = true
-    launchLabel.lineBreakMode = .byWordWrapping
-    launchLabel.numberOfLines = 3
+    launchLabel.lineBreakStrategy = .standard
+    launchLabel.numberOfLines = 2
 
     launchLabel.text = "Error"
     return launchLabel
+  }()
+  private var launchSubtitle: UILabel = {
+    let launchSubtitle = UILabel()
+    launchSubtitle.textColor = .secondaryLabel
+    launchSubtitle.textAlignment = .left
+    launchSubtitle.font = UIFont.preferredFont(forTextStyle: .subheadline)
+    launchSubtitle.adjustsFontSizeToFitWidth = true
+    launchSubtitle.numberOfLines = 3
+
+    launchSubtitle.text = "Error"
+    return launchSubtitle
   }()
 
   // MARK: - Init
@@ -50,7 +61,8 @@ class LaunchViewCell: UITableViewCell {
     func configure(with launch: Launch, rowNum: Int) {
       self.launch = launch
       self.patchImageView.image = UIImage(systemName: "questionmark")
-      self.launchName.text = "\(launch.name)\nFlight number: \(String(describing: launch.flightNumber) ?? "")\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))  "
+      self.launchName.text = "\(launch.name)"
+      self.launchSubtitle.text = "Flight number: \(String(describing: launch.flightNumber))\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))"
       if let imageUrl = self.launch.imageUrl {
         ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
           guard let self = self else {
@@ -82,16 +94,26 @@ class LaunchViewCell: UITableViewCell {
     private func setupUI() {
       self.addSubview(patchImageView)
       self.addSubview(launchName)
+      self.addSubview(launchSubtitle)
+
       patchImageView.translatesAutoresizingMaskIntoConstraints = false
       launchName.translatesAutoresizingMaskIntoConstraints = false
+      launchSubtitle.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         patchImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-        patchImageView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
-        patchImageView.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
-        patchImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
-        launchName.leadingAnchor.constraint(equalTo: patchImageView.trailingAnchor, constant: 20),
+        patchImageView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor, constant: 10),
+        patchImageView.widthAnchor.constraint(equalToConstant: 70),
+        patchImageView.heightAnchor.constraint(equalToConstant: 70),
+
+        launchName.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+        launchName.leadingAnchor.constraint(equalTo: patchImageView.trailingAnchor, constant: 30),
         launchName.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-        launchName.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        launchName.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.4),
+
+        launchSubtitle.topAnchor.constraint(equalTo: launchName.bottomAnchor, constant: 0),
+        launchSubtitle.leadingAnchor.constraint(equalTo: patchImageView.trailingAnchor, constant: 30),
+        launchSubtitle.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+        launchSubtitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
       ])
     }
 
