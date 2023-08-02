@@ -18,7 +18,7 @@ struct Launch: Codable {
   var dateUnix: Date
   var details: String?
   var success: Bool?
-  var flightNumber: Int?
+  var flightNumber: Int
   var links: Link?
   public var imageUrl: URL? {
     if let url = links?.patch?.large {

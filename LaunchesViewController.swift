@@ -52,29 +52,18 @@ class LaunchesViewController: UIViewController {
       guard let self = self else { return }
       switch self.launchesViewModel.applicationState {
       case .error:
-        genericEmptyStateView.removeFromSuperview()
-        genericEmptyStateView.setMessage(message: "Error")
-        view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
-        self.removeSpinner()
+        prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)
         print("error")
       case .empty:
-        genericEmptyStateView.removeFromSuperview()
-        genericEmptyStateView.setMessage(message: "No launches to show 🚀")
-        view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
-        self.removeSpinner()
+        prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)
         print("empty")
       case .loading:
         genericEmptyStateView.removeFromSuperview()
         self.showSpinner(onView: self.view)
         print("loading")
       case .noResults:
-        self.tableView.reloadData()
-        genericEmptyStateView.removeFromSuperview()
-        self.removeSpinner()
-        genericEmptyStateView.setMessage(message: "No results 👀")
-        view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
+        prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)
         print("no res")
-
       case .data:
         genericEmptyStateView.removeFromSuperview()
         self.removeSpinner()
@@ -82,6 +71,16 @@ class LaunchesViewController: UIViewController {
         print("data")
       }
     }
+  }
+  func prepareGenericEmptyView(with message: String) {
+    self.tableView.reloadData()
+    self.removeSpinner()
+    createEmptyView(with: message)
+  }
+  func createEmptyView(with message: String) {
+    genericEmptyStateView.removeFromSuperview()
+    genericEmptyStateView.setMessage(message: message, frame: view.bounds)
+    view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
   }
 
   // MARK: - Pull to refresh function
@@ -116,12 +115,11 @@ class LaunchesViewController: UIViewController {
   }
   func setupTableView() {
     view.addSubview(tableView)
-    tableView.rowHeight = 100
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
     tableView.delegate = self
@@ -149,7 +147,17 @@ class LaunchesViewController: UIViewController {
   // MARK: - App state
   func setupStateView() {
     genericEmptyStateView.delegate = self
-    genericEmptyStateView.frame = view.bounds
+  }
+// MARK: - Update view.bounds for the Subview
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+    DispatchQueue.main.async {
+      if UIDevice.current.orientation.isLandscape {
+        self.createEmptyView(with: self.launchesViewModel.applicationState.rawValue)
+      } else {
+        self.createEmptyView(with: self.launchesViewModel.applicationState.rawValue)
+      }
+    }
   }
 }
 

@@ -13,9 +13,10 @@ enum LaunchServiceError: Error {
   case invalidData
   case unableToComplete
 }
+
 enum ApplicationState: String {
   case data
-  case error
+  case error = "Error"
   case loading
   case empty = "No launches to show 🚀"
   case noResults = "No results 👀"
