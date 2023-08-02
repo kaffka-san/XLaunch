@@ -7,16 +7,31 @@
 
 import Foundation
 
-public class SortService {
+class SortService {
   private var name = "✔ Name 🔼"
   private var date = "Date"
   private var flightNumber = "Flight number"
   private var sortOrder = SortOrder.asc
-  private var sortBy = SortBy.name {
-  didSet {
-    if sortBy == oldValue {
-      toggleSortOrder()
+  private let userDefaults = UserDefaults.standard
+  private var sortParameter = SortParameter.name {
+    didSet {
+      if sortParameter == oldValue {
+        toggleSortOrder()
       }
+      if let data = try? JSONEncoder().encode(sortParameter) {
+        userDefaults.set(data, forKey: "SortingParameter")
+      }
+    }
+  }
+  init() {
+    guard let savedData = userDefaults.data(forKey: "SortingParameter") else {
+      setLabelTextActionSheet(for: SortParameter.name)
+      return
+    }
+    if let sortingParameter = try? JSONDecoder().decode(SortParameter.self, from: savedData) {
+      setLabelTextActionSheet(for: sortingParameter)
+    } else {
+      setLabelTextActionSheet(for: SortParameter.name)
     }
   }
   private var sortIcon = "🔼"
@@ -24,9 +39,9 @@ public class SortService {
     sortOrder = sortOrder == .asc ? .desc : .asc
     sortIcon = sortOrder == .asc ? "🔼" : "🔽"
   }
-  func setLabelTextActionSheet(for sortParameter: SortBy) {
-    sortBy = sortParameter
-    switch self.sortBy {
+  func setLabelTextActionSheet(for sortParameter: SortParameter) {
+    self.sortParameter = sortParameter
+    switch self.sortParameter {
     case .name:
       name = "✔ Name \(sortIcon)"
       date = "Date"
@@ -41,8 +56,8 @@ public class SortService {
       flightNumber = "Flight number"
     }
   }
-  func getSortParameter() -> SortBy {
-    return sortBy
+  func getSortParameter() -> SortParameter {
+    return sortParameter
   }
   func getSortOrder() -> SortOrder {
     return sortOrder

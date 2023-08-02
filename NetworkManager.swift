@@ -12,7 +12,7 @@ final class NetworkManager {
 
   private init() {}
 
-  static func fetchLaunches (with route: XLaunchApi, page: Int, searchedText: String?, sortParameter: SortBy, sortOrder: SortOrder, completion: @escaping (Result <Document, LaunchServiceError>) -> Void) {
+  static func fetchLaunches (with route: XLaunchApi, page: Int, searchedText: String?, sortParameter: SortParameter, sortOrder: SortOrder, completion: @escaping (Result <Document, LaunchServiceError>) -> Void) {
     guard let request = route.getRequest(page: page, searchedText: searchedText, sortParameter: sortParameter, sortOrder: sortOrder) else {
       completion(.failure(.invalidURL))
       return }
