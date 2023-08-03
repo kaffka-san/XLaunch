@@ -153,9 +153,7 @@ class LaunchesViewController: UIViewController {
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
-      if UIDevice.current.orientation.isLandscape {
-        self.createEmptyView(with: self.launchesViewModel.applicationState.rawValue)
-      } else {
+      if self.launchesViewModel.applicationState != .loading && self.launchesViewModel.applicationState != .data {
         self.createEmptyView(with: self.launchesViewModel.applicationState.rawValue)
       }
     }
