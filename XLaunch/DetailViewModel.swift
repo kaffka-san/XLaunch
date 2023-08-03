@@ -4,7 +4,7 @@
 //
 //  Created by Anastasia Lenina on 02.08.2023.
 //
-import UIKit
+import SwiftUI
 
 class DetailLaunchViewModel: ObservableObject {
   // MARK: - Variables
@@ -46,11 +46,13 @@ class DetailLaunchViewModel: ObservableObject {
   }
 }
 
+
 enum RocketLaunchStatus: String {
   case success
   case failure
   case unknown
 }
+
 
 extension RocketLaunchStatus: RawRepresentable {
   init?(rawValue: (String, String)) {

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SDWebImage
 import Nuke
 import NukeExtensions
 
