@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NukeUI
 
 struct DetailView: View {
   var detailLaunchViewModel: DetailLaunchViewModel
@@ -17,7 +18,7 @@ struct DetailView: View {
       }
     }
   }
-  var launchCard: some View {
+  @MainActor var launchCard: some View {
     Group {
       VStack {
         Text(detailLaunchViewModel.launch.name )
@@ -26,11 +27,16 @@ struct DetailView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.bottom, 15)
         HStack(spacing: 10) {
-          AsyncImage(url: URL(string: detailLaunchViewModel.launch.links?.patch?.large ?? "")) { image in
-            image
-              .resizable()
-          } placeholder: {
-            ProgressView()
+          LazyImage(url: detailLaunchViewModel.launch.imageUrl) { state in
+            if let image = state.image {
+              image
+                .resizable()
+            } else if state.error != nil {
+              Image("image-placeholder")
+                .resizable()
+            } else {
+              ProgressView()
+            }
           }
           .scaledToFit()
           .frame(width: 120)
