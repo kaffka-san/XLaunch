@@ -7,7 +7,6 @@
 
 import UIKit
 import SwiftUI
-import SDWebImage
 
 class LaunchesViewController: UIViewController {
   // MARK: - Variables
@@ -118,7 +117,7 @@ class LaunchesViewController: UIViewController {
     view.addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+      tableView.topAnchor.constraint(equalTo: view.topAnchor),
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -130,13 +129,12 @@ class LaunchesViewController: UIViewController {
 
   private func setupNavigationController() {
     self.navigationItem.title = "Space-X launches"
-    // self.navigationController?.toolbar.backgroundColor = .systemBackground
   }
 
   private func setupSearchController() {
     self.searchController.searchResultsUpdater = self
-    self.searchController.obscuresBackgroundDuringPresentation = false
-    self.searchController.hidesNavigationBarDuringPresentation = true
+//    self.searchController.obscuresBackgroundDuringPresentation = false
+//    self.searchController.hidesNavigationBarDuringPresentation = false
     self.searchController.searchBar.placeholder = "Search for launches"
     self.searchController.searchBar.delegate = self
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(didTapListButton))

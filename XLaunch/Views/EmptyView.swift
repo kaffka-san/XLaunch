@@ -64,7 +64,7 @@ class EmptyStateView: UIView {
     retryButton.configuration = .filled()
     retryButton.configuration?.cornerStyle = .capsule
     retryButton.configuration?.baseBackgroundColor = .systemBlue
-    retryButton.configuration?.baseForegroundColor = .label
+    retryButton.configuration?.baseForegroundColor = .white
     retryButton.setTitle("Retry", for: .normal)
     retryButton.translatesAutoresizingMaskIntoConstraints = false
     retryButton.addTarget(self, action: #selector(retry), for: .touchUpInside)
