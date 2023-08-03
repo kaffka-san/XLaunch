@@ -53,7 +53,7 @@ class LaunchesViewController: UIViewController {
       guard let self = self else { return }
       switch self.launchesViewModel.applicationState {
       case .error:
-        prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)
+        prepareGenericEmptyView(with: launchesViewModel.error?.localizedDescription ?? "Error")
         print("error")
       case .empty:
         prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)

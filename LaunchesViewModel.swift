@@ -59,26 +59,29 @@ class LaunchesViewModel {
     error = nil
     applicationState = .loading
     let route = XLaunchApi()
-    NetworkManager.fetchLaunches(with: route, page: page, searchedText: searchedText, sortParameter: sortService.getSortParameter(), sortOrder: sortService.getSortOrder()) {[weak self] result in
-      DispatchQueue.main.async {
-        switch result {
-        case .success(let document):
-          if self?.page == 1 {
-            self?.allLaunches = document.docs
-          } else {
-            self?.allLaunches += document.docs
-          }
-          self?.page = document.page
-          self?.hasNextPage = document.hasNextPage
-        case .failure(let error):
-          self?.error = error
-          self?.applicationState = .error
-          switch error {
-          case .invalidURL: print("invalid Url")
-          case .invalidResponse:  print("invalid invalidResponse")
-          case .invalidData: print("invalidData")
-          case .unableToComplete: print("unableToComplete")
-          }
+    Task {
+      do {
+        let document = try await NetworkManager.shared.fetchLaunches(
+          with: route,
+          page: page,
+          searchedText:
+          searchedText,
+          sortParameter: sortService.getSortParameter(),
+          sortOrder: sortService.getSortOrder()
+        )
+        if page == 1 {
+          allLaunches = document.docs
+        } else {
+          allLaunches += document.docs
+        }
+        page = document.page
+        hasNextPage = document.hasNextPage
+      } catch {
+        applicationState = .error
+        if let launchServiceError = error as? LaunchServiceError {
+          self.error = launchServiceError
+        } else {
+          self.error = .genericError(error)
         }
       }
     }
