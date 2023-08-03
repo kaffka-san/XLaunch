@@ -42,6 +42,7 @@ class EmptyStateView: UIView {
     addSubview(messageLabel)
     addSubview(logoImageView)
     addSubview(retryButton)
+
     configureMessageLabel()
     configureLogoImageView()
     configureRetryButtonView()
@@ -65,7 +66,7 @@ class EmptyStateView: UIView {
     retryButton.configuration?.cornerStyle = .capsule
     retryButton.configuration?.baseBackgroundColor = .systemBlue
     retryButton.configuration?.baseForegroundColor = .white
-    retryButton.setTitle("Retry", for: .normal)
+    retryButton.setTitle(NSLocalizedString("EmptyView.RetryButton", comment: "Retry button name"), for: .normal)
     retryButton.translatesAutoresizingMaskIntoConstraints = false
     retryButton.addTarget(self, action: #selector(retry), for: .touchUpInside)
 

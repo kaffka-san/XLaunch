@@ -13,7 +13,6 @@ import NukeExtensions
 class LaunchViewCell: UITableViewCell {
   // MARK: - Variables
   static let sellIdentifier = "launchCell"
-  private var launch: Launch!
 
   // MARK: - UI Components
   private var patchImageView: UIImageView = {
@@ -56,11 +55,11 @@ class LaunchViewCell: UITableViewCell {
 
   // MARK: - Setup UI
   func configure(with launch: Launch, rowNum: Int) {
-    self.launch = launch
     self.patchImageView.image = UIImage(named: "image-placeholder")
     self.launchName.text = "\(launch.name)"
-    self.launchSubtitle.text = "Flight number: \(String(describing: launch.flightNumber))\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))"
-    if let imageUrl = self.launch.imageUrl {
+    let subtitle = NSLocalizedString("LaunchViewCell.subtitle", comment: "Subtitle in the cell")
+    self.launchSubtitle.text = "\(subtitle) \(launch.flightNumber)\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))"
+    if let imageUrl = launch.imageUrl {
       ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
         guard let self = self else {
           return
@@ -113,6 +112,5 @@ class LaunchViewCell: UITableViewCell {
 
   override func setSelected(_ selected: Bool, animated: Bool) {
     super.setSelected(selected, animated: animated)
-    // Configure the view for the selected state
   }
 }

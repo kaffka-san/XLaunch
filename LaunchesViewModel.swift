@@ -58,7 +58,7 @@ class LaunchesViewModel {
   func fetchLaunches() {
     error = nil
     applicationState = .loading
-    let route = XLaunchApi()
+    let route = XLaunchAPI()
     Task {
       do {
         let document = try await NetworkManager.shared.fetchLaunches(

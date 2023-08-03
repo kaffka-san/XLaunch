@@ -1,34 +1,37 @@
 //
-//  XLaunchApi.swift
+//  XLaunchAPI.swift
 //  XLaunch
 //
 //  Created by Anastasia Lenina on 31.07.2023.
 //
 
 import Foundation
+
 struct BodyParameters: Codable {
-  var options: Option
-  var query: Query
+  let options: Option
+  let query: Query
 }
+
 struct Query: Codable {
-  var name: Parameters
+  let name: Parameters
 }
+
 struct Parameters: Codable {
-  var regex: String
-  var options: String
+  let regex: String
+  let options: String
   enum CodingKeys: String, CodingKey {
     case regex = "$regex"
     case options = "$options"
   }
 }
 struct Option: Codable {
-  var limit: Int
-  var page: Int
-  var select: [String]
-  var sort: [String: String]
+  let limit: Int
+  let page: Int
+  let select: [String]
+  let sort: [String: String]
 }
 
-struct XLaunchApi {
+struct XLaunchAPI {
   func getRequest(page: Int, searchedText: String?, sortParameter: SortParameter, sortOrder: SortOrder) -> URLRequest? {
     var request = URLRequest(url: self.url)
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")

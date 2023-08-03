@@ -52,17 +52,17 @@ class LaunchesViewController: UIViewController {
       guard let self = self else { return }
       switch self.launchesViewModel.applicationState {
       case .error:
-        prepareGenericEmptyView(with: launchesViewModel.error?.localizedDescription ?? "Error")
+        prepareGenericEmptyView(with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription )
         print("error")
       case .empty:
-        prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)
+        prepareGenericEmptyView(with: ApplicationState.getTitleFor(state: .empty))
         print("empty")
       case .loading:
         genericEmptyStateView.removeFromSuperview()
         self.showSpinner(onView: self.view)
         print("loading")
       case .noResults:
-        prepareGenericEmptyView(with: launchesViewModel.applicationState.rawValue)
+        prepareGenericEmptyView(with: ApplicationState.getTitleFor(state: .empty))
         print("no res")
       case .data:
         genericEmptyStateView.removeFromSuperview()
@@ -92,7 +92,7 @@ class LaunchesViewController: UIViewController {
 
   // MARK: - Sorting action sheet
   @objc private func didTapListButton () {
-    let alert = UIAlertController(title: "Please choose preferable sorting parameter", message: nil, preferredStyle: .actionSheet)
+    let alert = UIAlertController(title: NSLocalizedString("ViewController.SortingParameters.Title", comment: "Sorting parameter title"), message: nil, preferredStyle: .actionSheet)
     alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getNameLabelText(), style: .default) { _ in
       self.launchesViewModel.sortLaunches(by: .name)
     })
@@ -102,14 +102,14 @@ class LaunchesViewController: UIViewController {
     alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getDateLabelText(), style: .default) { _ in
       self.launchesViewModel.sortLaunches(by: .date)
     })
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: NSLocalizedString("ViewController.SortingParameters.Action.Cancel", comment: "Cancel action for the sorting parameters"), style: .cancel, handler: nil))
 
     self.present(alert, animated: true, completion: nil)
   }
 
   // MARK: - Setup UI
   func setUpRefreshControl() {
-    refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+  // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     tableView.addSubview(refreshControl)
   }
@@ -128,14 +128,12 @@ class LaunchesViewController: UIViewController {
   }
 
   private func setupNavigationController() {
-    self.navigationItem.title = "Space-X launches"
+    self.navigationItem.title = NSLocalizedString("ViewController.NavigationTitle", comment: "Application name")
   }
 
   private func setupSearchController() {
     self.searchController.searchResultsUpdater = self
-//    self.searchController.obscuresBackgroundDuringPresentation = false
-//    self.searchController.hidesNavigationBarDuringPresentation = false
-    self.searchController.searchBar.placeholder = "Search for launches"
+    self.searchController.searchBar.placeholder = NSLocalizedString("ViewController.SearchBar.Placeholder", comment: "Placeholder for the search bar")
     self.searchController.searchBar.delegate = self
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(didTapListButton))
     self.navigationItem.searchController = searchController
