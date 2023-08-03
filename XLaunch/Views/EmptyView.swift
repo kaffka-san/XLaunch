@@ -49,6 +49,7 @@ class EmptyStateView: UIView {
 
   private func configureMessageLabel() {
     messageLabel.numberOfLines = 3
+    messageLabel.lineBreakStrategy = .standard
     messageLabel.textColor = .label
     messageLabel.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -106,7 +107,7 @@ class TitleLabel: UILabel {
   convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
     self.init(frame: .zero)
     self.textAlignment = textAlignment
-    self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
+    self.font = UIFont.preferredFont(forTextStyle: .headline)
   }
 
   // MARK: - Setup UI
