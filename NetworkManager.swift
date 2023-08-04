@@ -11,7 +11,9 @@ final class NetworkManager {
   static let shared = NetworkManager()
   let decoder = JSONDecoder()
   private init() {
-    decoder.dateDecodingStrategy = .secondsSince1970
+    let fullISO8610Formatter = DateFormatter()
+    fullISO8610Formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    decoder.dateDecodingStrategy = .formatted(fullISO8610Formatter)
     decoder.keyDecodingStrategy = .convertFromSnakeCase
   }
 
