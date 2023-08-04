@@ -8,9 +8,12 @@
 import Foundation
 
 class SortService {
-  private var name = "✔ Name 🔼"
+  private var name = "✔ \(NSLocalizedString("SortService.Name", comment: "Parameter for the sort: Name")) 🔼"
   private var date = "Date"
   private var flightNumber = "Flight number"
+  private var nameLocalizedString = NSLocalizedString("SortService.Name", comment: "Parameter for the sort: Name")
+  private var dateLocalizedString = NSLocalizedString("SortService.Date", comment: "Parameter for the sort: Date")
+  private var flightNumberLocalizedString = NSLocalizedString("SortService.FlightNumber", comment: "Parameter for the sort: FlightNumber")
   private var sortOrder = SortOrder.asc
   private let userDefaults = UserDefaults.standard
   private var sortParameter = SortParameter.name {
@@ -43,17 +46,17 @@ class SortService {
     self.sortParameter = sortParameter
     switch self.sortParameter {
     case .name:
-      name = "✔ Name \(sortIcon)"
-      date = "Date"
-      flightNumber = "Flight number"
+      name = "✔ \(nameLocalizedString) \(sortIcon)"
+      date = dateLocalizedString
+      flightNumber = flightNumberLocalizedString
     case .flightNumber:
-      name = "Name"
-      date = "Date"
-      flightNumber = "✔ Flight number \(sortIcon)"
+      name = nameLocalizedString
+      date = dateLocalizedString
+      flightNumber = "✔ \(flightNumberLocalizedString) \(sortIcon)"
     case .date:
-      name = "Name"
-      date = "✔ Date \(sortIcon)"
-      flightNumber = "Flight number"
+      name = nameLocalizedString
+      date = "✔ \(dateLocalizedString) \(sortIcon)"
+      flightNumber = flightNumberLocalizedString
     }
   }
   func getSortParameter() -> SortParameter {

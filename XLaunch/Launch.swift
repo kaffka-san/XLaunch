@@ -8,28 +8,32 @@
 import UIKit
 
 struct Document: Codable {
-  var docs: [Launch]
-  var hasNextPage: Bool
-  var page: Int
+  let docs: [Launch]
+  let hasNextPage: Bool
+  let page: Int
 }
+
 struct Launch: Codable {
-  var id: String
-  var name: String
-  var dateUnix: Date
-  var details: String?
-  var success: Bool?
-  var flightNumber: Int
-  var links: Link?
-  public var imageUrl: URL? {
-    if let url = links?.patch?.large {
-      return URL(string: url)
-    } else { return nil }
+  let id: String
+  let name: String
+  let dateUnix: Date
+  let details: String?
+  let success: Bool?
+  let flightNumber: Int
+  let links: Link?
+
+  var imageUrl: URL? {
+    guard let url = links?.patch?.large else {
+      return nil
+    }
+    return URL(string: url)
   }
 }
+
 struct Link: Codable {
   let patch: Patch?
 }
 
 struct Patch: Codable {
-  var large: String?
+  let large: String?
 }

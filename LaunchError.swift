@@ -13,16 +13,23 @@ enum LaunchServiceError: Error {
   case invalidData
   case unableToComplete
   case genericError(Error)
+  case unknown
 
   var localizedDescription: String {
     switch self {
-    case .genericError(let error): return "There was an error:\n\(error.localizedDescription)"
-    case .unableToComplete: return "Unable to complete a task"
-    case .invalidURL: return "Unable to complete your request"
+    case .genericError(let error):
+      let message = NSLocalizedString("LaunchServiceError.GenericError", comment: "Generic error")
+      return "\(message)\n\(error.localizedDescription)"
+    case .unableToComplete:
+      return NSLocalizedString("LaunchServiceError.UnableToComplete", comment: "Unable to complete the task")
+    case .invalidURL:
+      return NSLocalizedString("LaunchServiceError.InvalidURL", comment: "Invalid URL")
     case .invalidData:
-      return "The data received from the server was invalid. Please try again"
-    case .invalidResponse(statusCode: let statusCode):
-      return "Invalid response with status code \(statusCode) from the server. Please try again"
+      return NSLocalizedString("LaunchServiceError.InvalidData", comment: "Invalid data")
+    case .invalidResponse:
+      return NSLocalizedString("LaunchServiceError.InvalidResponse", comment: "There was a invalid response")
+    case .unknown:
+      return NSLocalizedString("LaunchServiceError.UnknownError", comment: "There was an unknown error")
       }
   }
 }
@@ -31,6 +38,13 @@ enum ApplicationState: String {
   case data
   case error
   case loading
-  case empty = "No launches to show 🚀"
-  case noResults = "No results 👀"
+  case empty = "ApplicationState.Empty"
+  case noResults = "ApplicationState.NoResults"
+
+  func localizedString() -> String {
+    return NSLocalizedString(self.rawValue, comment: "")
+  }
+  static func getTitleFor(state: ApplicationState) -> String {
+    return state.localizedString()
+  }
 }

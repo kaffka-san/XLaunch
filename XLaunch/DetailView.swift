@@ -42,7 +42,7 @@ struct DetailView: View {
           .frame(width: 120)
           Spacer()
           VStack(alignment: .leading, spacing: 15) {
-            Text("Launch date:")
+            Text(NSLocalizedString("DetailView.LaunchDate.Subtitle", comment: "Launch date subtitle in the detail view"))
               .font(.system(.title2, weight: .bold))
               .foregroundColor(.primary)
               .frame(maxWidth: .infinity, alignment: .leading)
@@ -53,7 +53,7 @@ struct DetailView: View {
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.bottom, 5)
 
-            Text("Launch Status:")
+            Text(NSLocalizedString("DetailView.LaunchStatus.Subtitle", comment: "Launch status subtitle in the detail view"))
               .font(.system(.title2, weight: .bold))
               .foregroundColor(.primary)
 
@@ -84,7 +84,7 @@ struct DetailView: View {
 
   var detailCard: some View {  Group {
     VStack(spacing: 20) {
-      Text("Details:")
+      Text(NSLocalizedString("DetailView.Details", comment: "Details subtitle in the detail view"))
         .font(.system(.title2, weight: .bold))
         .foregroundColor(.primary)
         .frame(maxWidth: .infinity, alignment: .leading)

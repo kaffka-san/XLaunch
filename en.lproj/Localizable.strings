@@ -1,0 +1,34 @@
+"ViewController.NavigationTitle" = "Space-X launches";
+"ViewController.SortingParameters.Title" = "Please choose preferable sorting parameter";
+"ViewController.SortingParameters.Action.Cancel" = "Cancel";
+
+"ViewController.SearchBar.Placeholder" = "Search for launches";
+
+"LaunchViewCell.subtitle" = "Flight number:";
+
+"DetailView.LaunchDate.Subtitle" = "Launch Date";
+"DetailView.LaunchStatus.Subtitle" = "Launch Status";
+"DetailView.LaunchStatus.failure" = "Failure";
+"DetailView.LaunchStatus.success" = "Success";
+"DetailView.LaunchStatus.unknown" = "Unknown";
+"DetailView.Details" = "Details";
+
+"ApplicationState.Empty" = "No launches to show 🚀";
+"ApplicationState.NoResults" = "No results 👀";
+
+"LaunchServiceError.GenericError" = "There was an error:";
+"LaunchServiceError.UnableToComplete" = "Unable to complete a task";
+"LaunchServiceError.InvalidURL" = "Unable to complete your request";
+"LaunchServiceError.InvalidData" = "The data received from the server was invalid. Please try again";
+"LaunchServiceError.InvalidResponse" = "Invalid response from the server. Please try again";
+"LaunchServiceError.UnknownError" = "Unknown Error";
+
+"EmptyView.RetryButton" = "Retry";
+
+"SortService.Name" = "Name";
+"SortService.Date" = "Date";
+"SortService.FlightNumber" = "Flight number";
+
+
+
+
