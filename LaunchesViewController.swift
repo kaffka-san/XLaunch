@@ -55,14 +55,14 @@ class LaunchesViewController: UIViewController {
         prepareGenericEmptyView(with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription )
         print("error")
       case .empty:
-        prepareGenericEmptyView(with: ApplicationState.getTitleFor(state: .empty))
+        prepareGenericEmptyView(with: ApplicationState.empty.title)
         print("empty")
       case .loading:
         genericEmptyStateView.removeFromSuperview()
         self.showSpinner(onView: self.view)
         print("loading")
       case .noResults:
-        prepareGenericEmptyView(with: ApplicationState.getTitleFor(state: .empty))
+        prepareGenericEmptyView(with: ApplicationState.noResults.title)
         print("no res")
       case .data:
         genericEmptyStateView.removeFromSuperview()
@@ -75,9 +75,9 @@ class LaunchesViewController: UIViewController {
   func prepareGenericEmptyView(with message: String) {
     self.tableView.reloadData()
     self.removeSpinner()
-    createEmptyView(with: message)
+    configureEmptyView(with: message)
   }
-  func createEmptyView(with message: String) {
+  func configureEmptyView(with message: String) {
     genericEmptyStateView.removeFromSuperview()
     genericEmptyStateView.setMessage(message: message, frame: view.bounds)
     view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
@@ -150,7 +150,7 @@ class LaunchesViewController: UIViewController {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
       if self.launchesViewModel.applicationState != .loading && self.launchesViewModel.applicationState != .data {
-        self.createEmptyView(with: self.launchesViewModel.applicationState.rawValue)
+        self.configureEmptyView(with: self.launchesViewModel.applicationState.rawValue)
       }
     }
   }

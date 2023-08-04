@@ -41,10 +41,10 @@ enum ApplicationState: String {
   case empty = "ApplicationState.Empty"
   case noResults = "ApplicationState.NoResults"
 
-  func localizedString() -> String {
-    return NSLocalizedString(self.rawValue, comment: "")
+  var localizedString: String {
+    NSLocalizedString(self.rawValue, comment: "")
   }
-  static func getTitleFor(state: ApplicationState) -> String {
-    return state.localizedString()
+  var title: String {
+    localizedString
   }
 }
