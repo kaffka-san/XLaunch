@@ -52,7 +52,10 @@ class LaunchesViewController: UIViewController {
       guard let self = self else { return }
       switch self.launchesViewModel.applicationState {
       case .error:
-        prepareGenericEmptyView(with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription )
+        prepareGenericEmptyView(
+          with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription
+        )
+
         print("error")
       case .empty:
         prepareGenericEmptyView(with: ApplicationState.empty.title)
@@ -92,17 +95,37 @@ class LaunchesViewController: UIViewController {
 
   // MARK: - Sorting action sheet
   @objc private func didTapListButton () {
-    let alert = UIAlertController(title: NSLocalizedString("ViewController.SortingParameters.Title", comment: "Sorting parameter title"), message: nil, preferredStyle: .actionSheet)
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getNameLabelText(), style: .default) { _ in
+    let alert = UIAlertController(
+      title: NSLocalizedString(
+        "ViewController.SortingParameters.Title",
+        comment: "Sorting parameter title"),
+      message: nil,
+      preferredStyle: .actionSheet
+    )
+
+    alert.addAction(UIAlertAction(
+      title: self.launchesViewModel.sortService.getNameLabelText(),
+      style: .default
+    ) { _ in
       self.launchesViewModel.sortLaunches(by: .name)
     })
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getFlightNumberLabelText(), style: .default) { _ in
+    alert.addAction(UIAlertAction(
+      title: self.launchesViewModel.sortService.getFlightNumberLabelText(),
+      style: .default) { _ in
       self.launchesViewModel.sortLaunches(by: .flightNumber)
     })
-    alert.addAction(UIAlertAction(title: self.launchesViewModel.sortService.getDateLabelText(), style: .default) { _ in
+    alert.addAction(UIAlertAction(
+      title: self.launchesViewModel.sortService.getDateLabelText(),
+      style: .default) { _ in
       self.launchesViewModel.sortLaunches(by: .date)
     })
-    alert.addAction(UIAlertAction(title: NSLocalizedString("ViewController.SortingParameters.Action.Cancel", comment: "Cancel action for the sorting parameters"), style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(
+      title: NSLocalizedString(
+        "ViewController.SortingParameters.Action.Cancel",
+        comment: "Cancel action for the sorting parameters"),
+      style: .cancel,
+      handler: nil)
+    )
 
     self.present(alert, animated: true, completion: nil)
   }
@@ -128,14 +151,26 @@ class LaunchesViewController: UIViewController {
   }
 
   private func setupNavigationController() {
-    self.navigationItem.title = NSLocalizedString("ViewController.NavigationTitle", comment: "Application name")
+    self.navigationItem.title = NSLocalizedString(
+      "ViewController.NavigationTitle",
+      comment: "Application name")
   }
 
   private func setupSearchController() {
     self.searchController.searchResultsUpdater = self
-    self.searchController.searchBar.placeholder = NSLocalizedString("ViewController.SearchBar.Placeholder", comment: "Placeholder for the search bar")
+    self.searchController.searchBar.placeholder = NSLocalizedString(
+      "ViewController.SearchBar.Placeholder",
+      comment: "Placeholder for the search bar"
+    )
+
     self.searchController.searchBar.delegate = self
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(didTapListButton))
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+      image: UIImage(systemName: "list.bullet"),
+      style: .plain,
+      target: self,
+      action: #selector(didTapListButton)
+    )
+
     self.navigationItem.searchController = searchController
     self.definesPresentationContext = false
     self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -145,6 +180,7 @@ class LaunchesViewController: UIViewController {
   func setupStateView() {
     genericEmptyStateView.delegate = self
   }
+
   // MARK: - Update view.bounds for the Subview
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
@@ -161,19 +197,24 @@ extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return launchesViewModel.allLaunches.count
   }
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: LaunchViewCell.sellIdentifier, for: indexPath) as? LaunchViewCell else {
+    guard let cell = tableView.dequeueReusableCell(
+      withIdentifier: LaunchViewCell.sellIdentifier,
+      for: indexPath) as? LaunchViewCell else {
       fatalError("Unable to dequeue LaunchCell in LaunchesView Controller")
     }
     cell.configure(with: launchesViewModel.allLaunches[indexPath.row], rowNum: indexPath.row )
     return cell
   }
+
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     if indexPath.row == launchesViewModel.allLaunches.count - 1 {
       self.launchesViewModel.loadMoreData()
       refreshControl.endRefreshing()
     }
   }
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     self.tableView.deselectRow(at: indexPath, animated: true)
     let launch = self.launchesViewModel.allLaunches[indexPath.row]
@@ -212,6 +253,7 @@ extension LaunchesViewController: UISearchResultsUpdating, UISearchBarDelegate {
   func updateSearchResults(for searchController: UISearchController) {
     self.launchesViewModel.searchText(textString: searchController.searchBar.text)
   }
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     self.launchesViewModel.searchText(textString: "")
   }

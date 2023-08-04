@@ -15,10 +15,12 @@ class LaunchViewCell: UITableViewCell {
   static let sellIdentifier = "launchCell"
 
   // MARK: - UI Components
-  private var patchImageView: UIImageView = {
-    let launchImageView = UIImageView()
+  private var patchImageView: LazyImageView = {
+    let launchImageView = LazyImageView()
     launchImageView.contentMode = .scaleAspectFit
-    launchImageView.image = UIImage(named: "image-placeholder")
+    launchImageView.imageView.image = UIImage(named: "image-placeholder")
+    launchImageView.failureImage = UIImage(named: "image-placeholder")
+
     return launchImageView
   }()
 
@@ -55,31 +57,14 @@ class LaunchViewCell: UITableViewCell {
 
   // MARK: - Setup UI
   func configure(with launch: Launch, rowNum: Int) {
-    self.patchImageView.image = UIImage(named: "image-placeholder")
     self.launchName.text = "\(launch.name)"
     let subtitle = NSLocalizedString("LaunchViewCell.subtitle", comment: "Subtitle in the cell")
     self.launchSubtitle.text = "\(subtitle) \(launch.flightNumber)\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))"
-    if let imageUrl = launch.imageUrl {
-      ImagePipeline.shared.loadImage(with: imageUrl) { [weak self] response in
-        guard let self = self else {
-          return
-        }
-        switch response {
-        case .failure:
-          self.patchImageView.image = UIImage(named: "image-placeholder")
-          self.patchImageView.contentMode = .scaleAspectFit
-        case let .success(imageResponse):
-          self.patchImageView.image = imageResponse.image
-          self.patchImageView.contentMode = .scaleAspectFill
-        }
-      }
-      DataLoader.sharedUrlCache.diskCapacity = 0
-      let pipeline = ImagePipeline {
-        let dataCache = try? DataCache(name: imageUrl.absoluteString)
-        dataCache?.sizeLimit = 200 * 1024 * 1024
-        $0.dataCache = dataCache
-      }
-      ImagePipeline.shared = pipeline
+
+    if let imageUrl = launch.imageUrlSmall {
+      patchImageView.placeholderView = UIActivityIndicatorView()
+      patchImageView.priority = .high
+      patchImageView.url = imageUrl
     }
   }
 

@@ -22,7 +22,14 @@ struct Launch: Codable {
   let flightNumber: Int
   let links: Link?
 
-  var imageUrl: URL? {
+  var imageUrlSmall: URL? {
+    guard let url = links?.patch?.small else {
+      return nil
+    }
+    return URL(string: url)
+  }
+
+  var imageUrlLarge: URL? {
     guard let url = links?.patch?.large else {
       return nil
     }
@@ -35,5 +42,6 @@ struct Link: Codable {
 }
 
 struct Patch: Codable {
+  let small: String?
   let large: String?
 }

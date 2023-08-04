@@ -66,9 +66,19 @@ extension RocketLaunchStatus: RawRepresentable {
 
   var rawValue: (String, String) {
     switch self {
-    case .success: return (NSLocalizedString("DetailView.LaunchStatus.success", comment: "Launch status is success"), "checkmark")
-    case .failure: return  (NSLocalizedString("DetailView.LaunchStatus.failure", comment: "Launch status is failure"), "xmark")
-    case .unknown: return (NSLocalizedString("DetailView.LaunchStatus.unknown", comment: "Launch status is unknown"), "questionmark")
+    case .success: return (
+      NSLocalizedString("DetailView.LaunchStatus.success", comment: "Launch status is success"),
+      "checkmark")
+    case .failure: return  (
+      NSLocalizedString(
+        "DetailView.LaunchStatus.failure",
+        comment: "Launch status is failure"),
+      "xmark")
+    case .unknown: return (
+      NSLocalizedString(
+        "DetailView.LaunchStatus.unknown",
+        comment: "Launch status is unknown"),
+      "questionmark")
     }
   }
 }
