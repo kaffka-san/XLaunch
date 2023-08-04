@@ -62,12 +62,12 @@ struct DetailView: View {
               .foregroundColor(.primary)
 
             Label {
-              Text(detailLaunchViewModel.launchStatus.rawValue.0)
+              Text(detailLaunchViewModel.launchStatus.textValue.0)
                 .font(.system(.title3, weight: .bold))
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } icon: {
-              Image(systemName: detailLaunchViewModel.launchStatus.rawValue.1)
+              Image(systemName: detailLaunchViewModel.launchStatus.textValue.1)
                 .font(.system(.title3))
                 .foregroundColor(detailLaunchViewModel.launchStatus == RocketLaunchStatus.success ?
                   .green : detailLaunchViewModel.launchStatus == RocketLaunchStatus.failure ?

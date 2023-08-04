@@ -9,7 +9,7 @@ import UIKit
 
 class EmptyStateView: UIView {
   // MARK: - UI Components
-  private let messageLabel = TitleLabel(textAlignment: .center, fontSize: 28)
+  private let messageLabel = UILabel()
   private let logoImageView = UIImageView()
   private var retryButton = UIButton()
 
@@ -49,15 +49,20 @@ class EmptyStateView: UIView {
   }
 
   private func configureMessageLabel() {
-    messageLabel.numberOfLines = 3
     messageLabel.lineBreakStrategy = .standard
-    messageLabel.textColor = .label
+    messageLabel.adjustsFontForContentSizeCategory = true
+    messageLabel.textColor = .secondaryLabel
+    messageLabel.textAlignment = .center
+    messageLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+    messageLabel.adjustsFontSizeToFitWidth = true
+    messageLabel.numberOfLines = 3
+
     messageLabel.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       messageLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
       messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
       messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
-      messageLabel.heightAnchor.constraint(equalToConstant: 80)
+      messageLabel.heightAnchor.constraint(equalToConstant: 150 )
     ])
   }
 
@@ -67,14 +72,14 @@ class EmptyStateView: UIView {
     retryButton.configuration?.baseBackgroundColor = .systemBlue
     retryButton.configuration?.baseForegroundColor = .white
     retryButton.setTitle(NSLocalizedString("EmptyView.RetryButton", comment: "Retry button name"), for: .normal)
-    retryButton.translatesAutoresizingMaskIntoConstraints = false
     retryButton.addTarget(self, action: #selector(retry), for: .touchUpInside)
 
+    retryButton.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       retryButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10),
       retryButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 80  ),
       retryButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -80),
-      retryButton.heightAnchor.constraint(equalToConstant: 50)
+      retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
     ])
   }
   private func configureLogoImageView() {
@@ -92,32 +97,6 @@ class EmptyStateView: UIView {
   // MARK: - Delegate method
   @objc func retry(sender: UIButton) {
     delegate?.didTapButton()
-  }
-}
-
-
-class TitleLabel: UILabel {
-  // MARK: - Init label
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    configure()
-  }
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
-    self.init(frame: .zero)
-    self.textAlignment = textAlignment
-    self.font = UIFont.preferredFont(forTextStyle: .headline)
-  }
-
-  // MARK: - Setup UI
-  private func configure() {
-    textColor = .label
-    adjustsFontSizeToFitWidth = true
-    minimumScaleFactor = 0.9
-    lineBreakMode = .byTruncatingTail
-    translatesAutoresizingMaskIntoConstraints = false
   }
 }
 

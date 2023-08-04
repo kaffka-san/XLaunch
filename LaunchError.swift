@@ -33,18 +33,3 @@ enum LaunchServiceError: Error {
       }
   }
 }
-
-enum ApplicationState: String {
-  case data
-  case error
-  case loading
-  case empty = "ApplicationState.Empty"
-  case noResults = "ApplicationState.NoResults"
-
-  var localizedString: String {
-    NSLocalizedString(self.rawValue, comment: "")
-  }
-  var title: String {
-    localizedString
-  }
-}

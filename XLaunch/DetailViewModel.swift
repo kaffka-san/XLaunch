@@ -64,7 +64,7 @@ extension RocketLaunchStatus: RawRepresentable {
     }
   }
 
-  var rawValue: (String, String) {
+  var textValue: (String, String) {
     switch self {
     case .success: return (
       NSLocalizedString("DetailView.LaunchStatus.success", comment: "Launch status is success"),
