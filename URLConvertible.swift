@@ -10,12 +10,12 @@ import Foundation
 public enum HTTPMethod: String {
   case options = "OPTIONS"
   case get = "GET"
-  case head    = "HEAD"
-  case post    = "POST"
-  case put     = "PUT"
-  case patch   = "PATCH"
-  case delete  = "DELETE"
-  case trace   = "TRACE"
+  case head = "HEAD"
+  case post = "POST"
+  case put = "PUT"
+  case patch = "PATCH"
+  case delete = "DELETE"
+  case trace = "TRACE"
   case connect = "CONNECT"
 }
 
@@ -56,8 +56,8 @@ public extension URLRequestConvertible {
 
 // MARK: - Helper Methods
 public extension URLRequestConvertible {
-  /// Adapting URLRequest with predefined HTTPHeaderFields.
-  /// Should be called anytime you want to create URLRequest.
+  // Adapting URLRequest with predefined HTTPHeaderFields.
+  // Should be called anytime you want to create URLRequest.
   func adaptURLRequest() throws -> URLRequest {
   var urlRequest = URLRequest(url: url)
 
@@ -69,29 +69,6 @@ public extension URLRequestConvertible {
 
     return urlRequest
   }
-}
-
-struct LaunchesParameters: Encodable {
-  let options: Option
-  let query: Query
-}
-struct Query: Codable {
-  let name: Parameters
-}
-
-struct Parameters: Codable {
-  let regex: String
-  let options: String
-  enum CodingKeys: String, CodingKey {
-    case regex = "$regex"
-    case options = "$options"
-  }
-}
-struct Option: Codable {
-  let limit: Int
-  let page: Int
-  let select: [String]
-  let sort: [String: String]
 }
 
 enum LaunchesRequest: URLRequestConvertible {
@@ -130,9 +107,9 @@ enum LaunchesRequest: URLRequestConvertible {
 }
 
 public extension URLRequest {
-  /// Adding Parameters (as JSON Object) to the URLRequest body
-  /// - Parameter parameters: Encodable Parameters to be added
-  /// - Throws: An Error during Encoding or JSON serialization
+  // Adding Parameters (as JSON Object) to the URLRequest body
+  // - Parameter parameters: Encodable Parameters to be added
+  // - Throws: An Error during Encoding or JSON serialization
   mutating func add<T: Encodable>(_ parameters: T) throws {
     let encoder = JSONEncoder()
     let encoded = try encoder.encode(parameters)
@@ -140,4 +117,30 @@ public extension URLRequest {
     let data = try JSONSerialization.data(withJSONObject: json)
     httpBody = data
   }
+}
+
+
+struct LaunchesParameters: Encodable {
+  let options: Option
+  let query: Query
+}
+
+struct Query: Codable {
+  let name: Parameters
+}
+
+struct Parameters: Codable {
+  let regex: String
+  let options: String
+  enum CodingKeys: String, CodingKey {
+    case regex = "$regex"
+    case options = "$options"
+  }
+}
+
+struct Option: Codable {
+  let limit: Int
+  let page: Int
+  let select: [String]
+  let sort: [String: String]
 }

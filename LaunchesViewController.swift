@@ -17,6 +17,8 @@ class LaunchesViewController: UIViewController {
   private var genericEmptyStateView = EmptyStateView()
   private let searchController = UISearchController(searchResultsController: nil)
   private let refreshControl = UIRefreshControl()
+  private let spinnerView = UIView()
+  private let activityIndicator = UIActivityIndicatorView.init(style: .medium)
   private var tableView: UITableView = {
     let launchTableView = UITableView()
     launchTableView.backgroundColor = .systemBackground
@@ -28,6 +30,8 @@ class LaunchesViewController: UIViewController {
   init(_ launchesViewModel: LaunchesViewModel) {
     self.launchesViewModel = launchesViewModel
     super.init(nibName: nil, bundle: nil)
+    activityIndicator.center = view.center
+    view.addSubview(activityIndicator)
   }
 
   required init?(coder: NSCoder) {
@@ -50,28 +54,22 @@ class LaunchesViewController: UIViewController {
   func reloadData() {
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
-      switch self.launchesViewModel.applicationState {
+      switch self.launchesViewModel.launchesViewState {
       case .error:
         prepareGenericEmptyView(
           with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription
         )
-
-        print("error")
       case .empty:
-        prepareGenericEmptyView(with: ApplicationState.empty.title)
-        print("empty")
+        prepareGenericEmptyView(with: LaunchesViewState.empty.title)
       case .loading:
         genericEmptyStateView.removeFromSuperview()
-        self.showSpinner(onView: self.view)
-        print("loading")
+        self.showSpinner()
       case .noResults:
-        prepareGenericEmptyView(with: ApplicationState.noResults.title)
-        print("no res")
+        prepareGenericEmptyView(with: LaunchesViewState.noResults.title)
       case .data:
         genericEmptyStateView.removeFromSuperview()
         self.removeSpinner()
         self.tableView.reloadData()
-        print("data")
       }
     }
   }
@@ -185,8 +183,11 @@ class LaunchesViewController: UIViewController {
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
-      if self.launchesViewModel.applicationState != .loading && self.launchesViewModel.applicationState != .data {
-        self.configureEmptyView(with: self.launchesViewModel.applicationState.rawValue)
+      if self.launchesViewModel.launchesViewState == .empty {
+        self.configureEmptyView(with: self.launchesViewModel.launchesViewState.title)
+      } else if self.launchesViewModel.launchesViewState == .error {
+        self.configureEmptyView(
+          with: self.launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription)
       }
     }
   }
@@ -227,23 +228,14 @@ extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Loading functions
 extension LaunchesViewController {
-  func showSpinner(onView: UIView?) {
-    guard let onView else { return }
-    let spinnerView = UIView.init(frame: onView.bounds)
-    //        spinnerView.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.9)
-    let activityIndicator = UIActivityIndicatorView.init(style: .medium)
-    activityIndicator.startAnimating()
-    activityIndicator.center = spinnerView.center
+  func showSpinner() {
     DispatchQueue.main.async {
-      spinnerView.addSubview(activityIndicator)
-      onView.addSubview(spinnerView)
+      self.activityIndicator.startAnimating()
     }
-    self.spinner.append(spinnerView)
   }
-
   func removeSpinner() {
     DispatchQueue.main.async {
-      self.spinner.popLast()?.removeFromSuperview()
+      self.activityIndicator.stopAnimating()
     }
   }
 }

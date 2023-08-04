@@ -13,7 +13,7 @@ class LaunchesViewModel {
   var page = 1
   var searchedText = ""
   var hasNextPage = true
-  var applicationState = ApplicationState.empty {
+  var launchesViewState = LaunchesViewState.empty {
     didSet {
       DispatchQueue.main.async {
         self.onLoadingsUpdated?()
@@ -25,11 +25,11 @@ class LaunchesViewModel {
   private(set) var allLaunches: [Launch] = [] {
     didSet {
       if allLaunches.isEmpty && !searchedText.isEmpty && error == nil {
-        applicationState = .noResults
+        launchesViewState = .noResults
       } else if allLaunches.isEmpty && searchedText.isEmpty && error == nil {
-        applicationState = .empty
+        launchesViewState = .empty
       } else if error == nil, !allLaunches.isEmpty {
-        applicationState = .data
+        launchesViewState = .data
       }
     }
   }
@@ -57,7 +57,8 @@ class LaunchesViewModel {
 
   func fetchLaunches() {
     error = nil
-    applicationState = .loading
+    launchesViewState = .loading
+
     Task {
       do {
         let document = try await NetworkManager.shared.fetchLaunches(
@@ -67,6 +68,7 @@ class LaunchesViewModel {
           sortParameter: sortService.getSortParameter(),
           sortOrder: sortService.getSortOrder()
         )
+
         if page == 1 {
           allLaunches = document.docs
         } else {
@@ -75,7 +77,9 @@ class LaunchesViewModel {
         page = document.page
         hasNextPage = document.hasNextPage
       } catch {
-        applicationState = .error
+        allLaunches = []
+        launchesViewState = .error
+
         if let launchServiceError = error as? LaunchServiceError {
           self.error = launchServiceError
         } else {
@@ -91,5 +95,21 @@ class LaunchesViewModel {
     sortService.setLabelTextActionSheet(for: sortParameter)
     page = 1
     fetchLaunches()
+  }
+}
+
+// MARK: - Define state of the TableView Launches
+enum LaunchesViewState: String {
+  case data
+  case error
+  case loading
+  case empty = "ApplicationState.Empty"
+  case noResults = "ApplicationState.NoResults"
+
+  var localizedString: String {
+    NSLocalizedString(self.rawValue, comment: "")
+  }
+  var title: String {
+    localizedString
   }
 }
