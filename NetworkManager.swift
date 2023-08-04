@@ -22,9 +22,9 @@ final class NetworkManager {
     sortOrder: SortOrder
   ) async throws -> Document {
     let bodyParameterOption = Option(
-      limit: 12,
+      limit: 50,
       page: page,
-      select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch.large", "flight_number"],
+      select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch", "flight_number"],
       sort: [sortParameter.rawValue: sortOrder.rawValue]
         )
       let bodyParameterQuery = Query(

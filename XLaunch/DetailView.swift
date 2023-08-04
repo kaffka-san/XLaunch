@@ -27,7 +27,7 @@ struct DetailView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.bottom, 15)
         HStack(spacing: 10) {
-          LazyImage(url: detailLaunchViewModel.launch.imageUrl) { state in
+          LazyImage(url: detailLaunchViewModel.launch.imageUrlLarge) { state in
             if let image = state.image {
               image
                 .resizable()
@@ -42,7 +42,9 @@ struct DetailView: View {
           .frame(width: 120)
           Spacer()
           VStack(alignment: .leading, spacing: 15) {
-            Text(NSLocalizedString("DetailView.LaunchDate.Subtitle", comment: "Launch date subtitle in the detail view"))
+            Text(NSLocalizedString(
+              "DetailView.LaunchDate.Subtitle",
+              comment: "Launch date subtitle in the detail view"))
               .font(.system(.title2, weight: .bold))
               .foregroundColor(.primary)
               .frame(maxWidth: .infinity, alignment: .leading)
@@ -53,7 +55,9 @@ struct DetailView: View {
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.bottom, 5)
 
-            Text(NSLocalizedString("DetailView.LaunchStatus.Subtitle", comment: "Launch status subtitle in the detail view"))
+            Text(NSLocalizedString(
+              "DetailView.LaunchStatus.Subtitle",
+              comment: "Launch status subtitle in the detail view"))
               .font(.system(.title2, weight: .bold))
               .foregroundColor(.primary)
 
@@ -65,7 +69,9 @@ struct DetailView: View {
             } icon: {
               Image(systemName: detailLaunchViewModel.launchStatus.rawValue.1)
                 .font(.system(.title3))
-                .foregroundColor(detailLaunchViewModel.launchStatus == RocketLaunchStatus.success ? .green : detailLaunchViewModel.launchStatus == RocketLaunchStatus.failure ? .red : .gray)
+                .foregroundColor(detailLaunchViewModel.launchStatus == RocketLaunchStatus.success ?
+                  .green : detailLaunchViewModel.launchStatus == RocketLaunchStatus.failure ?
+                  .red : .gray)
             }
           }
         }
