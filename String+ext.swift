@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+/*
 extension String {
   func localize(comment: String = "") -> String {
     let defaultLanguage = "en"
@@ -20,3 +20,4 @@ extension String {
     return NSLocalizedString(self, bundle: bundle, comment: "")
   }
 }
+*/

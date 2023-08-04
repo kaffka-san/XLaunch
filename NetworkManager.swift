@@ -21,12 +21,11 @@ final class NetworkManager {
     sortParameter: SortParameter,
     sortOrder: SortOrder
   ) async throws -> Document {
-
     let bodyParameterOption = Option(
-        limit: 12,
-        page: page,
-        select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch.large", "flight_number"],
-        sort: [sortParameter.rawValue: sortOrder.rawValue]
+      limit: 12,
+      page: page,
+      select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch.large", "flight_number"],
+      sort: [sortParameter.rawValue: sortOrder.rawValue]
         )
       let bodyParameterQuery = Query(
         name: Parameters(regex: (searchedText ?? ""), options: "i"))

@@ -37,7 +37,7 @@ public protocol URLRequestConvertible {
 
 extension URLRequestConvertible {
   // The URL request.
-   var urlRequest: URLRequest? { try? asURLRequest() }
+  var urlRequest: URLRequest? { try? asURLRequest() }
 }
 
 // MARK: - Default Values
@@ -114,7 +114,7 @@ enum LaunchesRequest: URLRequestConvertible {
   var headers: [String: String] {
     switch self {
     case .launches:
-      return ["application/json": "Content-Type"]
+      return ["Content-Type": "application/json"]
     }
   }
 
