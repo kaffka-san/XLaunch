@@ -27,7 +27,7 @@ struct DetailView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.bottom, 15)
         HStack(spacing: 10) {
-          LazyImage(url: detailLaunchViewModel.launch.imageUrlLarge) { state in
+          LazyImage(url: detailLaunchViewModel.launch.imageUrlSmall) { state in
             if let image = state.image {
               image
                 .resizable()
@@ -45,30 +45,36 @@ struct DetailView: View {
             Text(NSLocalizedString(
               "DetailView.LaunchDate.Subtitle",
               comment: "Launch date subtitle in the detail view"))
-              .font(.system(.title2, weight: .bold))
+              .font(.system(.title3, weight: .bold))
               .foregroundColor(.primary)
               .frame(maxWidth: .infinity, alignment: .leading)
+              .lineLimit(3)
+              .fixedSize(horizontal: false, vertical: true)
 
             Text("\(detailLaunchViewModel.date)")
-              .font(.system(.title3, weight: .bold))
+              .font(.system(.headline, weight: .bold))
               .foregroundColor(.secondary)
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.bottom, 5)
+              .lineLimit(3)
+              .fixedSize(horizontal: false, vertical: true)
 
             Text(NSLocalizedString(
               "DetailView.LaunchStatus.Subtitle",
               comment: "Launch status subtitle in the detail view"))
-              .font(.system(.title2, weight: .bold))
+              .font(.system(.title3, weight: .bold))
               .foregroundColor(.primary)
+              .lineLimit(3)
+              .fixedSize(horizontal: false, vertical: true)
 
             Label {
               Text(detailLaunchViewModel.launchStatus.textValue.0)
-                .font(.system(.title3, weight: .bold))
+                .font(.system(.headline, weight: .bold))
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } icon: {
               Image(systemName: detailLaunchViewModel.launchStatus.textValue.1)
-                .font(.system(.title3))
+                .font(.system(.headline))
                 .foregroundColor(detailLaunchViewModel.launchStatus == RocketLaunchStatus.success ?
                   .green : detailLaunchViewModel.launchStatus == RocketLaunchStatus.failure ?
                   .red : .gray)
@@ -91,7 +97,7 @@ struct DetailView: View {
   var detailCard: some View {  Group {
     VStack(spacing: 20) {
       Text(NSLocalizedString("DetailView.Details", comment: "Details subtitle in the detail view"))
-        .font(.system(.title2, weight: .bold))
+        .font(.system(.title3, weight: .bold))
         .foregroundColor(.primary)
         .frame(maxWidth: .infinity, alignment: .leading)
       Text(detailLaunchViewModel.details )

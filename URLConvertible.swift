@@ -84,7 +84,7 @@ enum LaunchesRequest: URLRequestConvertible {
   var path: String {
     switch self {
     case .launches:
-      return "/v4/launches/query"
+      return "/v5/launches/query"
     }
   }
 

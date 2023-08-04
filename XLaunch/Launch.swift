@@ -16,7 +16,7 @@ struct Document: Codable {
 struct Launch: Codable {
   let id: String
   let name: String
-  let dateUnix: Date
+  let dateUtc: Date
   let details: String?
   let success: Bool?
   let flightNumber: Int

@@ -18,11 +18,7 @@ class DetailLaunchViewModel: ObservableObject {
   // MARK: - String processing
 
   var date: String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .medium
-    dateFormatter.timeStyle = .none
-    dateFormatter.locale = Locale.current
-    return "\(dateFormatter.string(from: self.launch.dateUnix))"
+    return self.launch.dateUtc.formatted(date: .long, time: .shortened)
   }
 
   var launchStatus: RocketLaunchStatus {

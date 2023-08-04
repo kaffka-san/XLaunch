@@ -35,6 +35,7 @@ class LaunchViewCell: UITableViewCell {
     launchLabel.text = "Error"
     return launchLabel
   }()
+
   private var launchSubtitle: UILabel = {
     let launchSubtitle = UILabel()
     launchSubtitle.textColor = .secondaryLabel
@@ -58,8 +59,9 @@ class LaunchViewCell: UITableViewCell {
   // MARK: - Setup UI
   func configure(with launch: Launch, rowNum: Int) {
     self.launchName.text = "\(launch.name)"
+    patchImageView.imageView.image = UIImage(named: "image-placeholder")
     let subtitle = NSLocalizedString("LaunchViewCell.subtitle", comment: "Subtitle in the cell")
-    self.launchSubtitle.text = "\(subtitle) \(launch.flightNumber)\n\(launch.dateUnix.formatted(date: .abbreviated, time: .shortened))"
+    self.launchSubtitle.text = "\(subtitle) \(launch.flightNumber)\n\(launch.dateUtc.formatted(date: .abbreviated, time: .shortened))"
 
     if let imageUrl = launch.imageUrlSmall {
       patchImageView.placeholderView = UIActivityIndicatorView()
