@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EmptyStateView: UIView {
+final class EmptyStateView: UIView {
   // MARK: - UI Components
   private let messageLabel = UILabel()
   private let logoImageView = UIImageView()

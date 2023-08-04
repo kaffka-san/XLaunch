@@ -9,14 +9,6 @@ import SwiftUI
 class DetailLaunchViewModel: ObservableObject {
   // MARK: - Variables
   @Published var launch: Launch
-
-  // MARK: - Initialisers
-  init(_ launch: Launch) {
-    self.launch = launch
-  }
-
-  // MARK: - String processing
-
   var date: String {
     return self.launch.dateUtc.formatted(date: .long, time: .shortened)
   }
@@ -40,15 +32,18 @@ class DetailLaunchViewModel: ObservableObject {
       return ""
     }
   }
-}
 
+  // MARK: - Initialisers
+  init(_ launch: Launch) {
+    self.launch = launch
+  }
+}
 
 enum RocketLaunchStatus: String {
   case success
   case failure
   case unknown
 }
-
 
 extension RocketLaunchStatus: RawRepresentable {
   init?(rawValue: (String, String)) {

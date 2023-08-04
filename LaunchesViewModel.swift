@@ -7,8 +7,9 @@
 
 import UIKit
 
-class LaunchesViewModel {
+final class LaunchesViewModel {
   // MARK: - Variables
+  var sortService = SortService()
   var onLoadingsUpdated: (() -> Void)?
   var page = 1
   var searchedText = ""
@@ -90,7 +91,6 @@ class LaunchesViewModel {
   }
 
   // MARK: - Sorting parameters
-  var sortService = SortService()
   func sortLaunches(by sortParameter: SortParameter) {
     sortService.setLabelTextActionSheet(for: sortParameter)
     page = 1

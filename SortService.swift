@@ -7,40 +7,29 @@
 
 import Foundation
 
-class SortService {
+final class SortService {
   private var name = "✔ \(NSLocalizedString("SortService.Name", comment: "Parameter for the sort: Name")) 🔼"
   private var date = "Date"
   private var flightNumber = "Flight number"
   private var sortIcon = "🔼"
   private var sortOrder = SortOrder.asc
+  private let persistence = Persistence()
 
   private var sortParameter = SortParameter.name {
     didSet {
       if sortParameter == oldValue {
         toggleSortOrder()
       }
-      if let data = try? JSONEncoder().encode(sortParameter) {
-        userDefaults.set(data, forKey: "SortingParameter")
-      }
+      persistence.saveData(sortParameter: sortParameter)
     }
   }
 
-
-  private let userDefaults = UserDefaults.standard
   private let nameLocalizedString = NSLocalizedString("SortService.Name", comment: "Parameter for the sort: Name")
   private let dateLocalizedString = NSLocalizedString("SortService.Date", comment: "Parameter for the sort: Date")
   private let flightNumberLocalizedString = NSLocalizedString("SortService.FlightNumber", comment: "Parameter for the sort: FlightNumber")
 
   init() {
-    guard let savedData = userDefaults.data(forKey: "SortingParameter") else {
-      setLabelTextActionSheet(for: SortParameter.name)
-      return
-    }
-    if let sortingParameter = try? JSONDecoder().decode(SortParameter.self, from: savedData) {
-      setLabelTextActionSheet(for: sortingParameter)
-    } else {
-      setLabelTextActionSheet(for: SortParameter.name)
-    }
+    setLabelTextActionSheet(for: persistence.getData())
   }
 
   private func toggleSortOrder() {

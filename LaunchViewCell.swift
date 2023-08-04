@@ -15,7 +15,7 @@ class LaunchViewCell: UITableViewCell {
   static let sellIdentifier = "launchCell"
 
   // MARK: - UI Components
-  private var patchImageView: LazyImageView = {
+  private let patchImageView: LazyImageView = {
     let launchImageView = LazyImageView()
     launchImageView.contentMode = .scaleAspectFit
     launchImageView.imageView.image = UIImage(named: "image-placeholder")
@@ -24,7 +24,7 @@ class LaunchViewCell: UITableViewCell {
     return launchImageView
   }()
 
-  private var launchName: UILabel = {
+  private let launchName: UILabel = {
     let launchLabel = UILabel()
     launchLabel.textColor = .label
     launchLabel.textAlignment = .left
@@ -36,7 +36,7 @@ class LaunchViewCell: UITableViewCell {
     return launchLabel
   }()
 
-  private var launchSubtitle: UILabel = {
+  private let launchSubtitle: UILabel = {
     let launchSubtitle = UILabel()
     launchSubtitle.textColor = .secondaryLabel
     launchSubtitle.textAlignment = .left

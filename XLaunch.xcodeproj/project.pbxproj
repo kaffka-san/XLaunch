@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		304B958C2A7DA5CA00286BD7 /* Persistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304B958B2A7DA5CA00286BD7 /* Persistance.swift */; };
 		3057F84F2A7BFAA100FC2A52 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3057F8512A7BFAA100FC2A52 /* Localizable.strings */; };
 		3057F8582A7C3A2600FC2A52 /* URLConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3057F8572A7C3A2600FC2A52 /* URLConvertible.swift */; };
 		305DC7F92A77D83A003295D5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7F82A77D83A003295D5 /* NetworkManager.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		304B958B2A7DA5CA00286BD7 /* Persistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistance.swift; sourceTree = "<group>"; };
 		3057F8502A7BFAA100FC2A52 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3057F8532A7BFB4500FC2A52 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		3057F8542A7BFB4500FC2A52 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				30D1E51C2A792CA100DE3995 /* SortService.swift */,
+				304B958B2A7DA5CA00286BD7 /* Persistance.swift */,
 			);
 			name = Services;
 			path = ..;
@@ -284,6 +287,7 @@
 				30D4F44D2A771B0900614143 /* AppDelegate.swift in Sources */,
 				30D1E51D2A792CA100DE3995 /* SortService.swift in Sources */,
 				30D4F4642A7728EC00614143 /* Launch.swift in Sources */,
+				304B958C2A7DA5CA00286BD7 /* Persistance.swift in Sources */,
 				30D4F4822A774E3F00614143 /* LaunchViewCell.swift in Sources */,
 				305DC7F92A77D83A003295D5 /* NetworkManager.swift in Sources */,
 				30F2F43D2A7AADCF0002B6C2 /* DetailViewModel.swift in Sources */,

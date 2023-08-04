@@ -18,6 +18,7 @@ struct DetailView: View {
       }
     }
   }
+
   @MainActor var launchCard: some View {
     Group {
       VStack {
