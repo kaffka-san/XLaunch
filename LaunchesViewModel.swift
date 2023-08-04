@@ -58,11 +58,9 @@ class LaunchesViewModel {
   func fetchLaunches() {
     error = nil
     applicationState = .loading
-    let route = XLaunchAPI()
     Task {
       do {
         let document = try await NetworkManager.shared.fetchLaunches(
-          with: route,
           page: page,
           searchedText:
           searchedText,

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NetworkManager {
+final class NetworkManager {
   static let shared = NetworkManager()
   let decoder = JSONDecoder()
   private init() {
@@ -16,21 +16,22 @@ class NetworkManager {
   }
 
   func fetchLaunches (
-    with route: XLaunchAPI,
     page: Int,
     searchedText: String?,
     sortParameter: SortParameter,
     sortOrder: SortOrder
   ) async throws -> Document {
 
-    guard let request = route.getRequest(
-      page: page,
-      searchedText: searchedText,
-      sortParameter: sortParameter,
-      sortOrder: sortOrder
-    ) else {
-      throw LaunchServiceError.invalidURL
-    }
+    let bodyParameterOption = Option(
+        limit: 12,
+        page: page,
+        select: ["id", "name", "date_unix", "date_utc", "details", "success", "links.patch.large", "flight_number"],
+        sort: [sortParameter.rawValue: sortOrder.rawValue]
+        )
+      let bodyParameterQuery = Query(
+        name: Parameters(regex: (searchedText ?? ""), options: "i"))
+
+    let request = try LaunchesRequest.launches(.init(options: bodyParameterOption, query: bodyParameterQuery)).asURLRequest()
 
     let (data, response) = try await URLSession.shared.data(for: request)
 

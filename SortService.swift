@@ -75,3 +75,14 @@ class SortService {
     return date
   }
 }
+
+enum SortParameter: String, Codable {
+  case name = "name"
+  case flightNumber = "flight_number"
+  case date = "date_unix"
+}
+
+enum SortOrder: String {
+  case asc
+  case desc
+}
