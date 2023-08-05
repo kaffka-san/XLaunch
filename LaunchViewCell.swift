@@ -6,9 +6,7 @@
 //
 
 import UIKit
-import Nuke
 import NukeUI
-import NukeExtensions
 
 class LaunchViewCell: UITableViewCell {
   // MARK: - Variables

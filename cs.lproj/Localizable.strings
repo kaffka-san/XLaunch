@@ -7,12 +7,11 @@
 
 "LaunchViewCell.subtitle" = "Číslo letu:";
 
-"DetailView.LaunchDate.Subtitle" = "Datum spuštění";
-"DetailView.LaunchStatus.Subtitle" = "Stav spuštění";
 "DetailView.LaunchStatus.failure" = "Selhání";
 "DetailView.LaunchStatus.success" = "Úspěch";
 "DetailView.LaunchStatus.unknown" = "Neznámý";
 "DetailView.Details" = "Podrobnosti";
+"DetailView.FlightNumber" = "Číslo letu";
 
 "ApplicationState.Empty" = "Žádná spouštění k zobrazení 🚀";
 "ApplicationState.NoResults" = "Žádné výsledky 👀";

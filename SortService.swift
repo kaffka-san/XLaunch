@@ -30,6 +30,7 @@ final class SortService {
 
   init() {
     setLabelTextActionSheet(for: persistence.getData())
+    sortOrder = SortOrder.asc
   }
 
   private func toggleSortOrder() {

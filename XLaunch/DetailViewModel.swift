@@ -10,7 +10,10 @@ class DetailLaunchViewModel: ObservableObject {
   // MARK: - Variables
   @Published var launch: Launch
   var date: String {
-    return self.launch.dateUtc.formatted(date: .long, time: .shortened)
+    return self.launch.dateUtc.formatted(date: .abbreviated, time: .omitted)
+  }
+  var time: String {
+    return self.launch.dateUtc.formatted(date: .omitted, time: .shortened)
   }
 
   var launchStatus: RocketLaunchStatus {
@@ -23,6 +26,11 @@ class DetailLaunchViewModel: ObservableObject {
     } else {
       return .unknown
     }
+  }
+
+  var flightNumber: String {
+    let text = (NSLocalizedString("DetailView.FlightNumber", comment: ""))
+    return "\(launch.flightNumber)"
   }
 
   var details: String {
@@ -48,8 +56,8 @@ enum RocketLaunchStatus: String {
 extension RocketLaunchStatus: RawRepresentable {
   init?(rawValue: (String, String)) {
     switch rawValue {
-    case ("Success", "checkmark"): self = .success
-    case ("failure", "xmark"): self = .failure
+    case ("Success", "checkmark.circle"): self = .success
+    case ("failure", "xmark.circle"): self = .failure
     case ("Unknown", "questionmark"): self = .unknown
     default: return nil
     }
