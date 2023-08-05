@@ -1,0 +1,30 @@
+// Czech Localization
+"ViewController.NavigationTitle" = "Space-X spouštění";
+"ViewController.SortingParameters.Title" = "Prosím, zvolte preferovaný způsob řazení";
+"ViewController.SortingParameters.Action.Cancel" = "Zrušit";
+
+"ViewController.SearchBar.Placeholder" = "Hledej spouštění";
+
+"LaunchViewCell.subtitle" = "Číslo letu:";
+
+"DetailView.LaunchStatus.failure" = "Selhání";
+"DetailView.LaunchStatus.success" = "Úspěch";
+"DetailView.LaunchStatus.unknown" = "Neznámý";
+"DetailView.Details" = "Podrobnosti";
+"DetailView.FlightNumber" = "Číslo letu";
+
+"ApplicationState.Empty" = "Žádná spouštění k zobrazení 🚀";
+"ApplicationState.NoResults" = "Žádné výsledky 👀";
+
+"LaunchServiceError.GenericError" = "Došlo k chybě:";
+"LaunchServiceError.UnableToComplete" = "Nelze dokončit úlohu";
+"LaunchServiceError.InvalidURL" = "Nelze dokončit váš požadavek";
+"LaunchServiceError.InvalidData" = "Data získaná ze serveru nejsou platná. Zkuste to znovu";
+"LaunchServiceError.InvalidResponse" = "Neplatná odpověď od serveru. Zkuste to znovu";
+"LaunchServiceError.UnknownError" = "Neznámá chyba";
+
+"EmptyView.RetryButton" = "Zkusit znovu";
+
+"SortService.Name" = "Název";
+"SortService.Date" = "Datum";
+"SortService.FlightNumber" = "Číslo letu";
