@@ -11,7 +11,7 @@ final class EmptyStateView: UIView {
   // MARK: - UI Components
   private let messageLabel = UILabel()
   private let logoImageView = UIImageView()
-  private var retryButton = UIButton()
+  private let retryButton = UIButton()
 
   // MARK: - Delegate
   weak var delegate: RetryActionDelegate?
@@ -99,6 +99,7 @@ final class EmptyStateView: UIView {
     delegate?.didTapButton()
   }
 }
+
 
 protocol RetryActionDelegate: AnyObject {
   func didTapButton()

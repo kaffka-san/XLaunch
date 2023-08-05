@@ -13,6 +13,7 @@ struct Document: Codable {
   let page: Int
 }
 
+
 struct Launch: Codable {
   let id: String
   let name: String
@@ -37,9 +38,11 @@ struct Launch: Codable {
   }
 }
 
+
 struct Link: Codable {
   let patch: Patch?
 }
+
 
 struct Patch: Codable {
   let small: String?
