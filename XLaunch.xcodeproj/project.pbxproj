@@ -13,8 +13,6 @@
 		305DC7F92A77D83A003295D5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7F82A77D83A003295D5 /* NetworkManager.swift */; };
 		305DC7FB2A77DA20003295D5 /* LaunchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7FA2A77DA20003295D5 /* LaunchError.swift */; };
 		305DC7FD2A77DA4E003295D5 /* LaunchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */; };
-		305DC8002A77F855003295D5 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC7FF2A77F855003295D5 /* Nuke */; };
-		305DC8022A77F855003295D5 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC8012A77F855003295D5 /* NukeExtensions */; };
 		305DC8042A77F855003295D5 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 305DC8032A77F855003295D5 /* NukeUI */; };
 		30D1E51D2A792CA100DE3995 /* SortService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1E51C2A792CA100DE3995 /* SortService.swift */; };
 		30D4F44D2A771B0900614143 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D4F44C2A771B0900614143 /* AppDelegate.swift */; };
@@ -58,8 +56,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				305DC8002A77F855003295D5 /* Nuke in Frameworks */,
-				305DC8022A77F855003295D5 /* NukeExtensions in Frameworks */,
 				305DC8042A77F855003295D5 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,8 +194,6 @@
 			);
 			name = XLaunch;
 			packageProductDependencies = (
-				305DC7FF2A77F855003295D5 /* Nuke */,
-				305DC8012A77F855003295D5 /* NukeExtensions */,
 				305DC8032A77F855003295D5 /* NukeUI */,
 			);
 			productName = XLaunch;
@@ -446,7 +440,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.1;
+				CURRENT_PROJECT_VERSION = 0.2;
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = XLaunch/Application/Info.plist;
@@ -476,7 +470,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.1;
+				CURRENT_PROJECT_VERSION = 0.2;
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = XLaunch/Application/Info.plist;
@@ -535,16 +529,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		305DC7FF2A77F855003295D5 /* Nuke */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
-		};
-		305DC8012A77F855003295D5 /* NukeExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeExtensions;
-		};
 		305DC8032A77F855003295D5 /* NukeUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 305DC7FE2A77F855003295D5 /* XCRemoteSwiftPackageReference "Nuke" */;
