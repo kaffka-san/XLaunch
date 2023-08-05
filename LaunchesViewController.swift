@@ -10,16 +10,16 @@ import SwiftUI
 
 class LaunchesViewController: UIViewController {
   // MARK: - Variables
-  private var launchesViewModel: LaunchesViewModel
+  private let launchesViewModel: LaunchesViewModel
 
   // MARK: - UI Components
-  private var spinner: [UIView] = []
-  private var genericEmptyStateView = EmptyStateView()
+  private let spinner: [UIView] = []
+  private let genericEmptyStateView = EmptyStateView()
   private let searchController = UISearchController(searchResultsController: nil)
   private let refreshControl = UIRefreshControl()
   private let spinnerView = UIView()
   private let activityIndicator = UIActivityIndicatorView.init(style: .medium)
-  private var tableView: UITableView = {
+  private let tableView: UITableView = {
     let launchTableView = UITableView()
     launchTableView.backgroundColor = .systemBackground
     launchTableView.register(LaunchViewCell.self, forCellReuseIdentifier: LaunchViewCell.sellIdentifier)
@@ -73,11 +73,13 @@ class LaunchesViewController: UIViewController {
       }
     }
   }
+
   func prepareGenericEmptyView(with message: String) {
     self.tableView.reloadData()
     self.removeSpinner()
     configureEmptyView(with: message)
   }
+
   func configureEmptyView(with message: String) {
     genericEmptyStateView.removeFromSuperview()
     genericEmptyStateView.setMessage(message: message, frame: view.bounds)
@@ -134,6 +136,7 @@ class LaunchesViewController: UIViewController {
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     tableView.addSubview(refreshControl)
   }
+
   func setupTableView() {
     view.addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -183,11 +186,12 @@ class LaunchesViewController: UIViewController {
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
-      if self.launchesViewModel.launchesViewState == .empty {
+      if self.launchesViewModel.launchesViewState == .empty || self.launchesViewModel.launchesViewState == .noResults {
         self.configureEmptyView(with: self.launchesViewModel.launchesViewState.title)
       } else if self.launchesViewModel.launchesViewState == .error {
         self.configureEmptyView(
-          with: self.launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription)
+          with: self.launchesViewModel.error?.localizedDescription ??
+          LaunchServiceError.unknown.localizedDescription)
       }
     }
   }

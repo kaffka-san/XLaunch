@@ -6,12 +6,12 @@
 
 "LaunchViewCell.subtitle" = "Flight number:";
 
-"DetailView.LaunchDate.Subtitle" = "Launch Date";
-"DetailView.LaunchStatus.Subtitle" = "Launch Status";
+
 "DetailView.LaunchStatus.failure" = "Failure";
 "DetailView.LaunchStatus.success" = "Success";
 "DetailView.LaunchStatus.unknown" = "Unknown";
 "DetailView.Details" = "Details";
+"DetailView.FlightNumber" = "Flight number";
 
 "ApplicationState.Empty" = "No launches to show 🚀";
 "ApplicationState.NoResults" = "No results 👀";
