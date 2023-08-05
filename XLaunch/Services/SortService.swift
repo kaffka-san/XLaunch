@@ -8,10 +8,10 @@
 import Foundation
 
 final class SortService {
-  private var name = "✔ \(NSLocalizedString("SortService.Name", comment: "Parameter for the sort: Name")) 🔼"
+  private var name = "✓ \(NSLocalizedString("SortService.Name", comment: "Parameter for the sort: Name")) ▲"
   private var date = "Date"
   private var flightNumber = "Flight number"
-  private var sortIcon = "🔼"
+  private var sortIcon = "▲"
   private var sortOrder = SortOrder.asc
   private let persistence = Persistence()
 
@@ -35,23 +35,23 @@ final class SortService {
 
   private func toggleSortOrder() {
     sortOrder = sortOrder == .asc ? .desc : .asc
-    sortIcon = sortOrder == .asc ? "🔼" : "🔽"
+    sortIcon = sortOrder == .asc ? "▲" : "▼"
   }
 
   func setLabelTextActionSheet(for sortParameter: SortParameter) {
     self.sortParameter = sortParameter
     switch self.sortParameter {
     case .name:
-      name = "✔ \(nameLocalizedString) \(sortIcon)"
+      name = "✓ \(nameLocalizedString) \(sortIcon)"
       date = dateLocalizedString
       flightNumber = flightNumberLocalizedString
     case .flightNumber:
       name = nameLocalizedString
       date = dateLocalizedString
-      flightNumber = "✔ \(flightNumberLocalizedString) \(sortIcon)"
+      flightNumber = "✓ \(flightNumberLocalizedString) \(sortIcon)"
     case .date:
       name = nameLocalizedString
-      date = "✔ \(dateLocalizedString) \(sortIcon)"
+      date = "✓ \(dateLocalizedString) \(sortIcon)"
       flightNumber = flightNumberLocalizedString
     }
   }
