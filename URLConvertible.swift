@@ -119,7 +119,6 @@ public extension URLRequest {
   }
 }
 
-
 struct LaunchesParameters: Encodable {
   let options: Option
   let query: Query

@@ -80,7 +80,6 @@
 		30D4F4402A771B0900614143 = {
 			isa = PBXGroup;
 			children = (
-				3057F8512A7BFAA100FC2A52 /* Localizable.strings */,
 				30D4F44B2A771B0900614143 /* XLaunch */,
 				30D4F44A2A771B0900614143 /* Products */,
 			);
@@ -97,6 +96,7 @@
 		30D4F44B2A771B0900614143 /* XLaunch */ = {
 			isa = PBXGroup;
 			children = (
+				3057F8512A7BFAA100FC2A52 /* Localizable.strings */,
 				30D4F4852A77A77F00614143 /* Networking */,
 				30D4F4672A77299B00614143 /* Supporting */,
 				30D1E51B2A792C8800DE3995 /* Services */,

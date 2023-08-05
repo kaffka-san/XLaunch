@@ -29,7 +29,6 @@ class DetailLaunchViewModel: ObservableObject {
   }
 
   var flightNumber: String {
-    let text = (NSLocalizedString("DetailView.FlightNumber", comment: ""))
     return "\(launch.flightNumber)"
   }
 

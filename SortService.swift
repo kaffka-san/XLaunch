@@ -77,6 +77,7 @@ final class SortService {
   }
 }
 
+
 enum SortParameter: String, Codable {
   case name = "name"
   case flightNumber = "flight_number"
