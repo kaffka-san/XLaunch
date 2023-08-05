@@ -22,7 +22,7 @@ class LaunchesViewController: UIViewController {
   private let tableView: UITableView = {
     let launchTableView = UITableView()
     launchTableView.backgroundColor = .systemBackground
-    launchTableView.register(LaunchViewCell.self, forCellReuseIdentifier: LaunchViewCell.sellIdentifier)
+    launchTableView.register(LaunchViewCell.self, forCellReuseIdentifier: LaunchViewCell.cellIdentifier)
     return launchTableView
   }()
 
@@ -205,7 +205,7 @@ extension LaunchesViewController: UITableViewDelegate, UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(
-      withIdentifier: LaunchViewCell.sellIdentifier,
+      withIdentifier: LaunchViewCell.cellIdentifier,
       for: indexPath) as? LaunchViewCell else {
       fatalError("Unable to dequeue LaunchCell in LaunchesView Controller")
     }

@@ -10,7 +10,7 @@ import NukeUI
 
 class LaunchViewCell: UITableViewCell {
   // MARK: - Variables
-  static let sellIdentifier = "launchCell"
+  static let cellIdentifier = "launchCell"
 
   // MARK: - UI Components
   private let patchImageView: LazyImageView = {

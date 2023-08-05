@@ -27,7 +27,7 @@ enum LaunchServiceError: Error {
     case .invalidData:
       return NSLocalizedString("LaunchServiceError.InvalidData", comment: "Invalid data")
     case .invalidResponse:
-      return NSLocalizedString("LaunchServiceError.InvalidResponse", comment: "There was a invalid response")
+      return NSLocalizedString("LaunchServiceError.InvalidResponse", comment: "There was an invalid response")
     case .unknown:
       return NSLocalizedString("LaunchServiceError.UnknownError", comment: "There was an unknown error")
       }
