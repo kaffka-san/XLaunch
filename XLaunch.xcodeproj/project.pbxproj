@@ -67,14 +67,79 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		30D1E51B2A792C8800DE3995 /* Services */ = {
+		304B958D2A7E55F700286BD7 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				30D1E51C2A792CA100DE3995 /* SortService.swift */,
 				304B958B2A7DA5CA00286BD7 /* Persistance.swift */,
 			);
-			name = Services;
-			path = ..;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		304B958E2A7E562600286BD7 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3057F8572A7C3A2600FC2A52 /* URLConvertible.swift */,
+				305DC7F82A77D83A003295D5 /* NetworkManager.swift */,
+				305DC7FA2A77DA20003295D5 /* LaunchError.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		304B958F2A7E563800286BD7 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F45A2A771B0A00614143 /* Info.plist */,
+				30D4F44E2A771B0900614143 /* SceneDelegate.swift */,
+				30D4F44C2A771B0900614143 /* AppDelegate.swift */,
+				30D4F4572A771B0A00614143 /* LaunchScreen.storyboard */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		304B95902A7E564A00286BD7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4632A7728EC00614143 /* Launch.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		304B95912A7E565500286BD7 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				304B95922A7E566200286BD7 /* LaunchesList */,
+				304B95932A7E567400286BD7 /* DetailView */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		304B95922A7E566200286BD7 /* LaunchesList */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4502A771B0900614143 /* LaunchesViewController.swift */,
+				30D4F4812A774E3F00614143 /* LaunchViewCell.swift */,
+				305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */,
+			);
+			path = LaunchesList;
+			sourceTree = "<group>";
+		};
+		304B95932A7E567400286BD7 /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				30F2F43C2A7AADCF0002B6C2 /* DetailViewModel.swift */,
+				30F2F43E2A7AADE10002B6C2 /* DetailView.swift */,
+			);
+			path = DetailView;
+			sourceTree = "<group>";
+		};
+		304B95942A7E5DBE00286BD7 /* Resourses */ = {
+			isa = PBXGroup;
+			children = (
+				30D4F4552A771B0A00614143 /* Assets.xcassets */,
+				3057F8512A7BFAA100FC2A52 /* Localizable.strings */,
+			);
+			path = Resourses;
 			sourceTree = "<group>";
 		};
 		30D4F4402A771B0900614143 = {
@@ -96,67 +161,15 @@
 		30D4F44B2A771B0900614143 /* XLaunch */ = {
 			isa = PBXGroup;
 			children = (
-				3057F8512A7BFAA100FC2A52 /* Localizable.strings */,
-				30D4F4852A77A77F00614143 /* Networking */,
-				30D4F4672A77299B00614143 /* Supporting */,
-				30D1E51B2A792C8800DE3995 /* Services */,
+				304B95942A7E5DBE00286BD7 /* Resourses */,
+				304B958E2A7E562600286BD7 /* Networking */,
+				304B958F2A7E563800286BD7 /* Application */,
+				304B958D2A7E55F700286BD7 /* Services */,
 				30F2F4332A7947BA0002B6C2 /* Views */,
-				30D4F4652A77294E00614143 /* Model */,
-				30D4F4682A7729DC00614143 /* Screens */,
-				30D4F4552A771B0A00614143 /* Assets.xcassets */,
-				30D4F4572A771B0A00614143 /* LaunchScreen.storyboard */,
-				30D4F45A2A771B0A00614143 /* Info.plist */,
+				304B95902A7E564A00286BD7 /* Model */,
+				304B95912A7E565500286BD7 /* Screens */,
 			);
 			path = XLaunch;
-			sourceTree = "<group>";
-		};
-		30D4F4652A77294E00614143 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				30D4F4632A7728EC00614143 /* Launch.swift */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		30D4F4672A77299B00614143 /* Supporting */ = {
-			isa = PBXGroup;
-			children = (
-				30D4F44E2A771B0900614143 /* SceneDelegate.swift */,
-				30D4F44C2A771B0900614143 /* AppDelegate.swift */,
-			);
-			name = Supporting;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		30D4F4682A7729DC00614143 /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				30D4F4692A7729E300614143 /* LaunchesList */,
-				30F2F43B2A7AADAD0002B6C2 /* DetaiView */,
-			);
-			name = Screens;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		30D4F4692A7729E300614143 /* LaunchesList */ = {
-			isa = PBXGroup;
-			children = (
-				30D4F4502A771B0900614143 /* LaunchesViewController.swift */,
-				30D4F4812A774E3F00614143 /* LaunchViewCell.swift */,
-				305DC7FC2A77DA4E003295D5 /* LaunchesViewModel.swift */,
-			);
-			name = LaunchesList;
-			sourceTree = "<group>";
-		};
-		30D4F4852A77A77F00614143 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				3057F8572A7C3A2600FC2A52 /* URLConvertible.swift */,
-				305DC7F82A77D83A003295D5 /* NetworkManager.swift */,
-				305DC7FA2A77DA20003295D5 /* LaunchError.swift */,
-			);
-			name = Networking;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		30F2F4332A7947BA0002B6C2 /* Views */ = {
@@ -165,16 +178,6 @@
 				30F2F4342A7947F00002B6C2 /* EmptyView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		30F2F43B2A7AADAD0002B6C2 /* DetaiView */ = {
-			isa = PBXGroup;
-			children = (
-				30F2F43C2A7AADCF0002B6C2 /* DetailViewModel.swift */,
-				30F2F43E2A7AADE10002B6C2 /* DetailView.swift */,
-			);
-			name = DetaiView;
-			path = XLaunch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,7 +274,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPATH=/opt/homebrew/bin:$PATH\nif [ -f ~/com.raywenderlich.swiftlint.yml ]; then\n  if which swiftlint >/dev/null; then\n    swiftlint --no-cache --config ~/com.raywenderlich.swiftlint.yml\n    else\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n  fi\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPATH=/opt/homebrew/bin:$PATH\nif [ -f ./com.raywenderlich.swiftlint.yml ]; then\n  if which swiftlint >/dev/null; then\n    swiftlint --no-cache --config ./com.raywenderlich.swiftlint.yml\n    else\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n  fi\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -446,7 +449,7 @@
 				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = XLaunch/Info.plist;
+				INFOPLIST_FILE = XLaunch/Application/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -476,7 +479,7 @@
 				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = XLaunch/Info.plist;
+				INFOPLIST_FILE = XLaunch/Application/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
