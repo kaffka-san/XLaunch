@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 class LaunchesViewController: UIViewController {
   // MARK: - Variables
@@ -19,6 +20,7 @@ class LaunchesViewController: UIViewController {
   private let refreshControl = UIRefreshControl()
   private let spinnerView = UIView()
   private let activityIndicator = UIActivityIndicatorView.init(style: .medium)
+  private var subscriptions = Set<AnyCancellable>()
   private let tableView: UITableView = {
     let launchTableView = UITableView()
     launchTableView.backgroundColor = .systemBackground
@@ -40,6 +42,7 @@ class LaunchesViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupSearchBarListener()
     setupTableView()
     setupNavigationController()
     setupStateView()
@@ -86,6 +89,18 @@ class LaunchesViewController: UIViewController {
     view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
   }
 
+  private func setupSearchBarListener() {
+    let publisher = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
+    publisher
+      .map { ($0.object as? UISearchTextField)?.text }
+      .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+      .removeDuplicates()
+      .sink { [weak self] searchedText in
+        self?.launchesViewModel.searchText(textString: searchedText)
+      }
+      .store(in: &subscriptions)
+  }
+
   // MARK: - Pull to refresh function
   @objc func refresh() {
     launchesViewModel.page = 1
@@ -112,12 +127,12 @@ class LaunchesViewController: UIViewController {
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getFlightNumberLabelText(),
       style: .default) { _ in
-      self.launchesViewModel.sortLaunches(by: .flightNumber)
+        self.launchesViewModel.sortLaunches(by: .flightNumber)
     })
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getDateLabelText(),
       style: .default) { _ in
-      self.launchesViewModel.sortLaunches(by: .date)
+        self.launchesViewModel.sortLaunches(by: .date)
     })
     alert.addAction(UIAlertAction(
       title: NSLocalizedString(
@@ -132,7 +147,7 @@ class LaunchesViewController: UIViewController {
 
   // MARK: - Setup UI
   func setUpRefreshControl() {
-  // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+    // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     tableView.addSubview(refreshControl)
   }
@@ -158,7 +173,6 @@ class LaunchesViewController: UIViewController {
   }
 
   private func setupSearchController() {
-    self.searchController.searchResultsUpdater = self
     self.searchController.searchBar.placeholder = NSLocalizedString(
       "ViewController.SearchBar.Placeholder",
       comment: "Placeholder for the search bar"
@@ -245,11 +259,7 @@ extension LaunchesViewController {
 }
 
 // MARK: - Search controller Functions
-extension LaunchesViewController: UISearchResultsUpdating, UISearchBarDelegate {
-  func updateSearchResults(for searchController: UISearchController) {
-    self.launchesViewModel.searchText(textString: searchController.searchBar.text)
-  }
-
+extension LaunchesViewController: UISearchBarDelegate {
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     self.launchesViewModel.searchText(textString: "")
   }

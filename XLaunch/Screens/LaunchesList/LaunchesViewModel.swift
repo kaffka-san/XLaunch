@@ -59,7 +59,7 @@ final class LaunchesViewModel {
   func fetchLaunches() {
     error = nil
     launchesViewState = .loading
-
+    print("fetching")
     Task {
       do {
         let document = try await NetworkManager.shared.fetchLaunches(

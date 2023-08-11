@@ -65,7 +65,6 @@ final class NetworkManager {
           }
         }, receiveValue: { promise(.success($0)) })
         .store(in: &self.cancellables)
-
     }
   }
 }
