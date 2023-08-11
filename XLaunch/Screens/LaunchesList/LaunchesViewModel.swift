@@ -68,7 +68,7 @@ final class LaunchesViewModel {
           searchedText,
           sortParameter: sortService.getSortParameter(),
           sortOrder: sortService.getSortOrder()
-        )
+        ).value
 
         if page == 1 {
           allLaunches = document.docs
