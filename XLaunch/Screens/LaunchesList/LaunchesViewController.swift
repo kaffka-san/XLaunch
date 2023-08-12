@@ -90,13 +90,10 @@ class LaunchesViewController: UIViewController {
   }
 
   private func setupSearchBarListener() {
-    let publisher = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
-    publisher
-      .map { ($0.object as? UISearchTextField)?.text }
-      .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
-      .removeDuplicates()
+    NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
+      .compactMap { ($0.object as? UISearchTextField)?.text }
       .sink { [weak self] searchedText in
-        self?.launchesViewModel.searchText(textString: searchedText)
+        self?.launchesViewModel.searchTextPublisher.send(searchedText)
       }
       .store(in: &subscriptions)
   }
@@ -261,7 +258,7 @@ extension LaunchesViewController {
 // MARK: - Search controller Functions
 extension LaunchesViewController: UISearchBarDelegate {
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    self.launchesViewModel.searchText(textString: "")
+    self.launchesViewModel.searchTextPublisher.send("")
   }
 }
 
