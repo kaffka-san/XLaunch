@@ -13,7 +13,6 @@ final class LaunchesViewModel {
   var sortService = SortService()
   var onLoadingsUpdated: (() -> Void)?
   var page = 1
-  var searchedText = ""
 
   let searchTextPublisher = CurrentValueSubject<String, Never>("")
   var cancellables = Set<AnyCancellable>()
@@ -55,7 +54,6 @@ final class LaunchesViewModel {
 
   func searchTextPublisher(_ textString: String) -> AnyPublisher<Document, Error> {
     page = 1
-    searchedText = textString
     return fetchLaunchesPublisher()
   }
 
@@ -67,8 +65,7 @@ final class LaunchesViewModel {
       do {
         let document = try await NetworkManager.shared.fetchLaunches(
           page: page,
-          searchedText:
-          searchedText,
+          searchedText: searchTextPublisher.value,
           sortParameter: sortService.getSortParameter(),
           sortOrder: sortService.getSortOrder()
         ).value
@@ -96,6 +93,7 @@ final class LaunchesViewModel {
   func setupSearch() {
     searchTextPublisher
       .removeDuplicates()
+      .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
       .map { [unowned self] searchText -> AnyPublisher<Document, Never> in
         self.searchTextPublisher(searchText)
           .catch { [weak self] error in
@@ -124,8 +122,7 @@ final class LaunchesViewModel {
     launchesViewState = .loading
     return NetworkManager.shared.fetchLaunches(
       page: page,
-      searchedText:
-      searchedText,
+      searchedText: searchTextPublisher.value,
       sortParameter: sortService.getSortParameter(),
       sortOrder: sortService.getSortOrder()
     )
