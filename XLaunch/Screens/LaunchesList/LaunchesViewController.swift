@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 class LaunchesViewController: UIViewController {
   // MARK: - Variables
@@ -19,6 +20,7 @@ class LaunchesViewController: UIViewController {
   private let refreshControl = UIRefreshControl()
   private let spinnerView = UIView()
   private let activityIndicator = UIActivityIndicatorView.init(style: .medium)
+  private var subscriptions = Set<AnyCancellable>()
   private let tableView: UITableView = {
     let launchTableView = UITableView()
     launchTableView.backgroundColor = .systemBackground
@@ -40,21 +42,21 @@ class LaunchesViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupSearchBarListener()
     setupTableView()
     setupNavigationController()
     setupStateView()
-    setUpRefreshControl()
+    setupLaunchesViewState()
+    setupRefreshControl()
     self.setupSearchController()
-    self.launchesViewModel.onLoadingsUpdated = { [weak self] in
-      self?.reloadData()
-    }
   }
 
   // MARK: - Update view on application state change
   func reloadData() {
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
-      switch self.launchesViewModel.launchesViewState {
+      self.refreshControl.endRefreshing()
+      switch self.launchesViewModel.launchesViewState.value {
       case .error:
         prepareGenericEmptyView(
           with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription
@@ -86,11 +88,25 @@ class LaunchesViewController: UIViewController {
     view.insertSubview(genericEmptyStateView, aboveSubview: tableView)
   }
 
+  private func setupSearchBarListener() {
+    NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
+      .compactMap { ($0.object as? UISearchTextField)?.text }
+      .sink { [weak self] searchedText in
+        self?.launchesViewModel.searchText.send(searchedText)
+      }
+      .store(in: &subscriptions)
+  }
+
+  private func setupLaunchesViewState() {
+    launchesViewModel.launchesViewState.sink { [unowned self] _ in
+      self.reloadData()
+    }
+    .store(in: &subscriptions)
+  }
+
   // MARK: - Pull to refresh function
   @objc func refresh() {
-    launchesViewModel.page = 1
-    launchesViewModel.fetchLaunches()
-    refreshControl.endRefreshing()
+    self.launchesViewModel.refresh()
   }
 
   // MARK: - Sorting action sheet
@@ -107,17 +123,18 @@ class LaunchesViewController: UIViewController {
       title: self.launchesViewModel.sortService.getNameLabelText(),
       style: .default
     ) { _ in
-      self.launchesViewModel.sortLaunches(by: .name)
+      self.launchesViewModel.sortParameter.send(.name)
     })
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getFlightNumberLabelText(),
       style: .default) { _ in
-      self.launchesViewModel.sortLaunches(by: .flightNumber)
+        self.launchesViewModel.sortParameter.send(.flightNumber)
     })
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getDateLabelText(),
       style: .default) { _ in
-      self.launchesViewModel.sortLaunches(by: .date)
+        //  self.launchesViewModel.sortLaunches(by: .date)
+        self.launchesViewModel.sortParameter.send(.date)
     })
     alert.addAction(UIAlertAction(
       title: NSLocalizedString(
@@ -131,8 +148,8 @@ class LaunchesViewController: UIViewController {
   }
 
   // MARK: - Setup UI
-  func setUpRefreshControl() {
-  // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+  func setupRefreshControl() {
+    // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     tableView.addSubview(refreshControl)
   }
@@ -158,7 +175,6 @@ class LaunchesViewController: UIViewController {
   }
 
   private func setupSearchController() {
-    self.searchController.searchResultsUpdater = self
     self.searchController.searchBar.placeholder = NSLocalizedString(
       "ViewController.SearchBar.Placeholder",
       comment: "Placeholder for the search bar"
@@ -186,9 +202,9 @@ class LaunchesViewController: UIViewController {
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
-      if self.launchesViewModel.launchesViewState == .empty || self.launchesViewModel.launchesViewState == .noResults {
-        self.configureEmptyView(with: self.launchesViewModel.launchesViewState.title)
-      } else if self.launchesViewModel.launchesViewState == .error {
+      if self.launchesViewModel.launchesViewState.value == .empty || self.launchesViewModel.launchesViewState.value == .noResults {
+        self.configureEmptyView(with: self.launchesViewModel.launchesViewState.value.title)
+      } else if self.launchesViewModel.launchesViewState.value == .error {
         self.configureEmptyView(
           with: self.launchesViewModel.error?.localizedDescription ??
           LaunchServiceError.unknown.localizedDescription)
@@ -245,19 +261,15 @@ extension LaunchesViewController {
 }
 
 // MARK: - Search controller Functions
-extension LaunchesViewController: UISearchResultsUpdating, UISearchBarDelegate {
-  func updateSearchResults(for searchController: UISearchController) {
-    self.launchesViewModel.searchText(textString: searchController.searchBar.text)
-  }
-
+extension LaunchesViewController: UISearchBarDelegate {
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    self.launchesViewModel.searchText(textString: "")
+    self.launchesViewModel.searchText.send("")
   }
 }
 
 // MARK: - Empty state Delegate
 extension LaunchesViewController: RetryActionDelegate {
   func didTapButton() {
-    self.launchesViewModel.fetchLaunches()
+    self.launchesViewModel.refresh()
   }
 }

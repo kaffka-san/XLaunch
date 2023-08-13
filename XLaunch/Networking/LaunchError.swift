@@ -9,7 +9,7 @@ import Foundation
 
 enum LaunchServiceError: Error {
   case invalidURL
-  case invalidResponse(statusCode: Int)
+  case invalidResponse(statusCode: Int?)
   case invalidData
   case unableToComplete
   case genericError(Error)
