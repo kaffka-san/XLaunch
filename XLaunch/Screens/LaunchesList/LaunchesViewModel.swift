@@ -81,10 +81,19 @@ final class LaunchesViewModel {
     searchText
       .dropFirst()
       .removeDuplicates()
-      .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+      .map { value in
+        if value.isEmpty {
+          return Just(value)
+            .eraseToAnyPublisher()
+        } else {
+          return Just(value)
+            .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        }
+      }
+      .switchToLatest()
       .map { [unowned self] _ -> AnyPublisher<Document, Never> in
         self.page = 1
-
         return fetchLaunches()
       }
       .switchToLatest()
@@ -97,7 +106,6 @@ final class LaunchesViewModel {
       .map { [unowned self] sortParam -> AnyPublisher<Document, Never> in
         self.sortService.setLabelTextActionSheet(for: sortParam)
         self.page = 1
-
         return fetchLaunches()
       }
       .switchToLatest()
@@ -107,7 +115,6 @@ final class LaunchesViewModel {
 
   // MARK: - Handlers
   func handleDocument(_ document: Document) {
-    self.error = nil
     launchesViewState.value = .data
     if page == 1 {
       allLaunches = document.docs
@@ -125,7 +132,7 @@ final class LaunchesViewModel {
     } else {
       self.error = LaunchServiceError.genericError(error)
     }
-
+    allLaunches = []
     return Empty<Document, Never>(completeImmediately: true)
       .eraseToAnyPublisher()
   }
