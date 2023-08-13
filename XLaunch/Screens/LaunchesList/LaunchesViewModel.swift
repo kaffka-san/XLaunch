@@ -12,26 +12,29 @@ final class LaunchesViewModel {
   // MARK: - Variables
   var sortService = SortService()
   var onLoadingsUpdated: (() -> Void)?
-  var page = 1
+  private var page = 1
+  var hasNextPage = true
 
-  let searchTextPublisher = CurrentValueSubject<String, Never>("")
+  let searchText = CurrentValueSubject<String, Never>("")
+  let sortParameter = CurrentValueSubject<SortParameter, Never>(.name)
+
   var cancellables = Set<AnyCancellable>()
 
-  var hasNextPage = true
+  var error: LaunchServiceError?
   var launchesViewState = LaunchesViewState.empty {
     didSet {
       DispatchQueue.main.async {
         self.onLoadingsUpdated?()
+        print("state \(self.launchesViewState)")
       }
     }
   }
-  var error: LaunchServiceError?
 
   private(set) var allLaunches: [Launch] = [] {
     didSet {
-      if allLaunches.isEmpty && !searchTextPublisher.value.isEmpty && error == nil {
+      if allLaunches.isEmpty && !searchText.value.isEmpty && error == nil {
         launchesViewState = .noResults
-      } else if allLaunches.isEmpty && searchTextPublisher.value.isEmpty && error == nil {
+      } else if allLaunches.isEmpty && searchText.value.isEmpty && error == nil {
         launchesViewState = .empty
       } else if error == nil, !allLaunches.isEmpty {
         launchesViewState = .data
@@ -41,128 +44,98 @@ final class LaunchesViewModel {
 
   // MARK: - Init
   init() {
-    self.fetchLaunchesInitial()
+    Publishers.Merge3(
+      self.fetchLaunches(),
+      self.setupSearch(),
+      self.setupSort()
+    )
+    .sink { self.handleDocument($0) }
+    .store(in: &self.cancellables)
   }
 
   // MARK: - Fetching Functions
+  func refresh() {
+    page = 1
+    fetchLaunches()
+      .sink { self.handleDocument($0) }
+      .store(in: &self.cancellables)
+  }
+
   func loadMoreData() {
     if hasNextPage {
       page += 1
       fetchLaunches()
+        .sink { self.handleDocument($0) }
+        .store(in: &self.cancellables)
     }
   }
 
-  func searchTextPublisher(_ textString: String) -> AnyPublisher<Document, Error> {
-    page = 1
-    return fetchLaunchesPublisher()
-  }
-
-  func fetchLaunches() {
+  func fetchLaunches() -> AnyPublisher<Document, Never> {
     error = nil
     launchesViewState = .loading
     print("fetching")
-    Task {
-      do {
-        let document = try await NetworkManager.shared.fetchLaunches(
-          page: page,
-          searchedText: searchTextPublisher.value,
-          sortParameter: sortService.getSortParameter(),
-          sortOrder: sortService.getSortOrder()
-        ).value
 
-        if page == 1 {
-          allLaunches = document.docs
-        } else {
-          allLaunches += document.docs
-        }
-        page = document.page
-        hasNextPage = document.hasNextPage
-      } catch {
-        allLaunches = []
-        launchesViewState = .error
-
-        if let launchServiceError = error as? LaunchServiceError {
-          self.error = launchServiceError
-        } else {
-          self.error = .genericError(error)
-        }
-      }
-    }
-  }
-
-  func setupSearch() {
-    searchTextPublisher
-      .removeDuplicates()
-      .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-      .map { [unowned self] searchText -> AnyPublisher<Document, Never> in
-        self.searchTextPublisher(searchText)
-          .catch { [weak self] error in
-            self?.allLaunches = []
-            self?.launchesViewState = .error
-
-            if let knownError = error as? LaunchServiceError {
-              self?.error = knownError
-            } else {
-              self?.error = LaunchServiceError.genericError(error)
-            }
-
-            return Empty<Document, Never>(completeImmediately: true)
-          }
-          .eraseToAnyPublisher()
-      }
-      .switchToLatest()
-      .sink { [weak self] document in
-        self?.allLaunches = document.docs
-      }
-      .store(in: &self.cancellables)
-  }
-
-  func fetchLaunchesPublisher() -> AnyPublisher<Document, Error> {
-    error = nil
-    launchesViewState = .loading
     return NetworkManager.shared.fetchLaunches(
       page: page,
-      searchedText: searchTextPublisher.value,
+      searchedText: searchText.value,
       sortParameter: sortService.getSortParameter(),
       sortOrder: sortService.getSortOrder()
     )
+    .catch { self.handleError(error: $0) }
     .eraseToAnyPublisher()
   }
 
-  func fetchLaunchesInitial() {
-    fetchLaunchesPublisher()
-    .sink { [weak self] completion in
-      switch completion {
-      case .finished: break
-      case .failure(let error):
-        self?.allLaunches = []
-        self?.launchesViewState = .error
-        if let launchServiceError = error as? LaunchServiceError {
-          self?.error = launchServiceError
-        } else {
-          self?.error = .genericError(error)
-        }
-      }
-    } receiveValue: { [weak self] document in
-      self?.launchesViewState = .data
-      if self?.page == 1 {
-        self?.allLaunches = document.docs
-      } else {
-        self?.allLaunches += document.docs
-      }
-      self?.page = document.page
-      self?.hasNextPage = document.hasNextPage
+  func setupSearch() -> AnyPublisher<Document, Never> {
+    searchText
+      .dropFirst()
+      .removeDuplicates()
+      .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+      .map { [unowned self] _ -> AnyPublisher<Document, Never> in
+        self.page = 1
 
-      self?.setupSearch()
-    }
-    .store(in: &self.cancellables)
+        return fetchLaunches()
+      }
+      .switchToLatest()
+      .eraseToAnyPublisher()
   }
 
-  // MARK: - Sorting parameters
-  func sortLaunches(by sortParameter: SortParameter) {
-    sortService.setLabelTextActionSheet(for: sortParameter)
-    page = 1
-    fetchLaunches()
+  func setupSort() -> AnyPublisher<Document, Never> {
+    sortParameter
+      .dropFirst()
+      .map { [unowned self] sortParam -> AnyPublisher<Document, Never> in
+        self.sortService.setLabelTextActionSheet(for: sortParam)
+        self.page = 1
+
+        return fetchLaunches()
+      }
+      .switchToLatest()
+      .eraseToAnyPublisher()
+  }
+
+
+  // MARK: - Handlers
+  func handleDocument(_ document: Document) {
+    self.error = nil
+    launchesViewState = .data
+    if page == 1 {
+      allLaunches = document.docs
+    } else {
+      allLaunches += document.docs
+    }
+    page = document.page
+    hasNextPage = document.hasNextPage
+  }
+
+  func handleError(error: Error) -> AnyPublisher<Document, Never> {
+    launchesViewState = .error
+    if let serviceError = error as? LaunchServiceError {
+      self.error = serviceError
+    } else {
+      self.error = LaunchServiceError.genericError(error)
+    }
+
+    return Empty<Document, Never>(completeImmediately: true)
+      .eraseToAnyPublisher()
   }
 }
 

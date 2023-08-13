@@ -49,7 +49,8 @@ class LaunchesViewController: UIViewController {
     setUpRefreshControl()
     self.setupSearchController()
     self.launchesViewModel.onLoadingsUpdated = { [weak self] in
-      self?.reloadData()
+        self?.reloadData()
+        print("reload data")
     }
   }
 
@@ -93,16 +94,21 @@ class LaunchesViewController: UIViewController {
     NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
       .compactMap { ($0.object as? UISearchTextField)?.text }
       .sink { [weak self] searchedText in
-        self?.launchesViewModel.searchTextPublisher.send(searchedText)
+        self?.launchesViewModel.searchText.send(searchedText)
       }
       .store(in: &subscriptions)
   }
 
   // MARK: - Pull to refresh function
   @objc func refresh() {
-    launchesViewModel.page = 1
-    launchesViewModel.fetchLaunches()
-    refreshControl.endRefreshing()
+    self.launchesViewModel.refresh()
+    self.launchesViewModel.onLoadingsUpdated = { [weak self] in
+      if self?.launchesViewModel.launchesViewState != LaunchesViewState.loading {
+        DispatchQueue.main.async {
+          self?.refreshControl.endRefreshing()
+        }
+      }
+    }
   }
 
   // MARK: - Sorting action sheet
@@ -119,17 +125,18 @@ class LaunchesViewController: UIViewController {
       title: self.launchesViewModel.sortService.getNameLabelText(),
       style: .default
     ) { _ in
-      self.launchesViewModel.sortLaunches(by: .name)
+      self.launchesViewModel.sortParameter.send(.name)
     })
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getFlightNumberLabelText(),
       style: .default) { _ in
-        self.launchesViewModel.sortLaunches(by: .flightNumber)
+        self.launchesViewModel.sortParameter.send(.flightNumber)
     })
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getDateLabelText(),
       style: .default) { _ in
-        self.launchesViewModel.sortLaunches(by: .date)
+      //  self.launchesViewModel.sortLaunches(by: .date)
+        self.launchesViewModel.sortParameter.send(.date)
     })
     alert.addAction(UIAlertAction(
       title: NSLocalizedString(
@@ -258,13 +265,13 @@ extension LaunchesViewController {
 // MARK: - Search controller Functions
 extension LaunchesViewController: UISearchBarDelegate {
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    self.launchesViewModel.searchTextPublisher.send("")
+    self.launchesViewModel.searchText.send("")
   }
 }
 
 // MARK: - Empty state Delegate
 extension LaunchesViewController: RetryActionDelegate {
   func didTapButton() {
-    self.launchesViewModel.fetchLaunches()
+    self.launchesViewModel.refresh()
   }
 }
