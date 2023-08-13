@@ -46,19 +46,17 @@ class LaunchesViewController: UIViewController {
     setupTableView()
     setupNavigationController()
     setupStateView()
-    setUpRefreshControl()
+    setupLaunchesViewState()
+    setupRefreshControl()
     self.setupSearchController()
-    self.launchesViewModel.onLoadingsUpdated = { [weak self] in
-        self?.reloadData()
-        print("reload data")
-    }
   }
 
   // MARK: - Update view on application state change
   func reloadData() {
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
-      switch self.launchesViewModel.launchesViewState {
+      self.refreshControl.endRefreshing()
+      switch self.launchesViewModel.launchesViewState.value {
       case .error:
         prepareGenericEmptyView(
           with: launchesViewModel.error?.localizedDescription ?? LaunchServiceError.unknown.localizedDescription
@@ -99,16 +97,16 @@ class LaunchesViewController: UIViewController {
       .store(in: &subscriptions)
   }
 
+  private func setupLaunchesViewState() {
+    launchesViewModel.launchesViewState.sink { [unowned self] _ in
+      self.reloadData()
+    }
+    .store(in: &subscriptions)
+  }
+
   // MARK: - Pull to refresh function
   @objc func refresh() {
     self.launchesViewModel.refresh()
-    self.launchesViewModel.onLoadingsUpdated = { [weak self] in
-      if self?.launchesViewModel.launchesViewState != LaunchesViewState.loading {
-        DispatchQueue.main.async {
-          self?.refreshControl.endRefreshing()
-        }
-      }
-    }
   }
 
   // MARK: - Sorting action sheet
@@ -135,7 +133,7 @@ class LaunchesViewController: UIViewController {
     alert.addAction(UIAlertAction(
       title: self.launchesViewModel.sortService.getDateLabelText(),
       style: .default) { _ in
-      //  self.launchesViewModel.sortLaunches(by: .date)
+        //  self.launchesViewModel.sortLaunches(by: .date)
         self.launchesViewModel.sortParameter.send(.date)
     })
     alert.addAction(UIAlertAction(
@@ -150,7 +148,7 @@ class LaunchesViewController: UIViewController {
   }
 
   // MARK: - Setup UI
-  func setUpRefreshControl() {
+  func setupRefreshControl() {
     // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     tableView.addSubview(refreshControl)
@@ -204,9 +202,9 @@ class LaunchesViewController: UIViewController {
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     DispatchQueue.main.async {
-      if self.launchesViewModel.launchesViewState == .empty || self.launchesViewModel.launchesViewState == .noResults {
-        self.configureEmptyView(with: self.launchesViewModel.launchesViewState.title)
-      } else if self.launchesViewModel.launchesViewState == .error {
+      if self.launchesViewModel.launchesViewState.value == .empty || self.launchesViewModel.launchesViewState.value == .noResults {
+        self.configureEmptyView(with: self.launchesViewModel.launchesViewState.value.title)
+      } else if self.launchesViewModel.launchesViewState.value == .error {
         self.configureEmptyView(
           with: self.launchesViewModel.error?.localizedDescription ??
           LaunchServiceError.unknown.localizedDescription)

@@ -21,23 +21,16 @@ final class LaunchesViewModel {
   var cancellables = Set<AnyCancellable>()
 
   var error: LaunchServiceError?
-  var launchesViewState = LaunchesViewState.empty {
-    didSet {
-      DispatchQueue.main.async {
-        self.onLoadingsUpdated?()
-        print("state \(self.launchesViewState)")
-      }
-    }
-  }
+  var launchesViewState = CurrentValueSubject <LaunchesViewState, Never>(.empty)
 
   private(set) var allLaunches: [Launch] = [] {
     didSet {
       if allLaunches.isEmpty && !searchText.value.isEmpty && error == nil {
-        launchesViewState = .noResults
+        launchesViewState.value = .noResults
       } else if allLaunches.isEmpty && searchText.value.isEmpty && error == nil {
-        launchesViewState = .empty
+        launchesViewState.value = .empty
       } else if error == nil, !allLaunches.isEmpty {
-        launchesViewState = .data
+        launchesViewState.value = .data
       }
     }
   }
@@ -72,8 +65,7 @@ final class LaunchesViewModel {
 
   func fetchLaunches() -> AnyPublisher<Document, Never> {
     error = nil
-    launchesViewState = .loading
-    print("fetching")
+    launchesViewState.value = .loading
 
     return NetworkManager.shared.fetchLaunches(
       page: page,
@@ -116,7 +108,7 @@ final class LaunchesViewModel {
   // MARK: - Handlers
   func handleDocument(_ document: Document) {
     self.error = nil
-    launchesViewState = .data
+    launchesViewState.value = .data
     if page == 1 {
       allLaunches = document.docs
     } else {
@@ -127,7 +119,7 @@ final class LaunchesViewModel {
   }
 
   func handleError(error: Error) -> AnyPublisher<Document, Never> {
-    launchesViewState = .error
+    launchesViewState.value = .error
     if let serviceError = error as? LaunchServiceError {
       self.error = serviceError
     } else {
